@@ -6,7 +6,7 @@ import {
     Text,
     NativeEventEmitter,
     ScrollView,
-    Switch, View
+    Switch, View, Pressable
 } from "react-native";
 
 import { HelloWave } from "@/components/HelloWave";
@@ -26,6 +26,7 @@ import Animated, {
     withTiming
 } from "react-native-reanimated";
 import { Gesture, GestureDetector, GestureHandlerRootView, PanGestureHandler } from "react-native-gesture-handler";
+import { Link } from "expo-router";
 
 
 export default function HomeScreen() {
@@ -122,6 +123,7 @@ export default function HomeScreen() {
 
     return (
         <GestureHandlerRootView className="flex-1 bg-green-500">
+            <Link href="/temp">跳转</Link>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}
             >
                 {oscArr?.map((item: any, index: number) => (
@@ -139,33 +141,16 @@ const ListItem = ({ item, index }: { item: DataT; index: number }) => {
 
     const panGesture = Gesture.Pan()
         .activeOffsetX([-10, 10])
-        .onStart((event) => {
-            "worklet";
-            // 可以在这里添加开始手势时的逻辑
-            // translateX.value = event.translationX;
+        .onStart(() => {
             startX.value = translateX.value;
         })
         .onUpdate((event) => {
-            "worklet";
             const newTranslateX = startX.value + event.translationX;
             translateX.value = Math.min(Math.max(newTranslateX, -100), 0);
-            // translateX.value = event.translationX;
-            // if (event.translationX < 0) {
-            //     translateX.value = event.translationX;
-            // }
-            // if(event.translationX < 100) {
-            //     translateX.value = event.translationX;
-            // }
         })
         .onEnd((event) => {
-            "worklet";
-            if (event.translationX < -100) {
-                translateX.value = withTiming(-100);
-            } else {
-                translateX.value = withTiming(0);
-            }
+            translateX.value = withTiming(event.translationX < -100 ? -100 : 0);
         });
-    // const scrollGesture = Gesture.Simultaneous(Gesture.Pan(), panGesture);
 
     const rStyle = useAnimatedStyle(() => ({
         transform: [{ translateX: translateX.value }]
@@ -176,7 +161,7 @@ const ListItem = ({ item, index }: { item: DataT; index: number }) => {
             <Animated.View style={rStyle}>
                 <View className="flex-row bg-yellow-300">
                     <TouchableOpacity
-                        className={`flex-1 m-2 p-2 rounded ${item.status ? "bg-green-500" : "bg-red-500"} flex-row items-center justify-between`}
+                        className={`flex-1 my-2 mx-3 p-2 rounded ${item.status ? "bg-green-500" : "bg-red-500"} flex-row items-center justify-between`}
                         // onPress={() => handleOperate(item, index)}
                     >
                         <Text className="text-3xl">{item.name}</Text>
