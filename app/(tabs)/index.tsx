@@ -6,9 +6,13 @@ import {
     Text,
     NativeEventEmitter,
     ScrollView,
-    Switch, View, Pressable
+    Switch,
+    View,
+    Pressable,
+    StatusBar,
 } from "react-native";
 
+import { LinearGradient } from "expo-linear-gradient";
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
@@ -23,11 +27,10 @@ import Animated, {
     useAnimatedGestureHandler,
     useAnimatedStyle,
     useSharedValue,
-    withTiming
+    withTiming,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector, GestureHandlerRootView, PanGestureHandler } from "react-native-gesture-handler";
 import { Link } from "expo-router";
-
 
 export default function HomeScreen() {
     const [data, setData] = useState<any>(undefined);
@@ -58,21 +61,20 @@ export default function HomeScreen() {
 
     useEffect(() => {
         const portOut = 9000;
-// //OSC server IP address like "192.168.1.80" or "localhost"
-//         const address = "192.168.31.180";
+        // //OSC server IP address like "192.168.1.80" or "localhost"
+        //         const address = "192.168.31.180";
         const address = "192.168.31.180";
-//
-// //create the client only once in componentDidMount
-//         osc.createClient(address, portOut);
+        //
+        // //create the client only once in componentDidMount
+        //         osc.createClient(address, portOut);
 
-//now you can send OSC messages like this (only after creating a client)
-//         osc.sendMessage("/address/", [1.0, 0.5]);
+        //now you can send OSC messages like this (only after creating a client)
+        //         osc.sendMessage("/address/", [1.0, 0.5]);
 
-//send any combination of integers, floats, bool & string values:
-//         osc.sendMessage("/address/", ["string value", 1, false, 0.5]);
-//         osc.sendMessage("/input/Horizontal/",)
-//         osc.sendMessage("/input/Jump")
-
+        //send any combination of integers, floats, bool & string values:
+        //         osc.sendMessage("/address/", ["string value", 1, false, 0.5]);
+        //         osc.sendMessage("/input/Horizontal/",)
+        //         osc.sendMessage("/input/Jump")
     }, []);
 
     // const handleJump = (param: number) => {
@@ -119,47 +121,48 @@ export default function HomeScreen() {
         setOscArr(newOscArr);
     };
 
-
-
     return (
-        <GestureHandlerRootView className="flex-1 bg-green-500">
-            <Link href="/temp">跳转</Link>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}
-            >
-                {oscArr?.map((item: any, index: number) => (
-                    <ListItem key={index} item={item} index={index} />
-                ))}
-            </ScrollView>
-        </GestureHandlerRootView>
+        <LinearGradient
+            style={{ flex: 1 }}
+            // className="flex-1 bg-orange-300"
+            colors={["#09203f", "#537895"]}
+        >
+            <GestureHandlerRootView className="flex-1  pt-16">
+                {/*<Link href="/temp">跳转11</Link>*/}
+                <ScrollView className="flex-1 ">
+                    {oscArr?.map((item: any, index: number) => <ListItem key={index} item={item} index={index} />)}
+                </ScrollView>
+            </GestureHandlerRootView>
+        </LinearGradient>
     );
-};
+}
 
 const ListItem = ({ item, index }: { item: DataT; index: number }) => {
     const translateX = useSharedValue(0);
     const startX = useSharedValue(0);
-
 
     const panGesture = Gesture.Pan()
         .activeOffsetX([-10, 10])
         .onStart(() => {
             startX.value = translateX.value;
         })
-        .onUpdate((event) => {
+        .onUpdate(event => {
             const newTranslateX = startX.value + event.translationX;
             translateX.value = Math.min(Math.max(newTranslateX, -100), 0);
         })
-        .onEnd((event) => {
+        .onEnd(event => {
             translateX.value = withTiming(event.translationX < -100 ? -100 : 0);
         });
 
     const rStyle = useAnimatedStyle(() => ({
-        transform: [{ translateX: translateX.value }]
+        transform: [{ translateX: translateX.value }],
     }));
 
     return (
         <GestureDetector gesture={panGesture}>
             <Animated.View style={rStyle}>
-                <View className="flex-row bg-yellow-300">
+                {/*<StatusBar barStyle="light-content" backgroundColor="#CCC" />*/}
+                <View className="flex-row">
                     <TouchableOpacity
                         className={`flex-1 my-2 mx-3 p-2 rounded ${item.status ? "bg-green-500" : "bg-red-500"} flex-row items-center justify-between`}
                         // onPress={() => handleOperate(item, index)}
@@ -183,4 +186,3 @@ const ListItem = ({ item, index }: { item: DataT; index: number }) => {
         </GestureDetector>
     );
 };
-
