@@ -3,6 +3,6 @@ export type DataT = {
     input: {
         address: string;
         type: "Bool";
-        status?: boolean;
-    }
+    };
+    status?: boolean;
 }
