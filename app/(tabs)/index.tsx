@@ -9,7 +9,7 @@ import {
     Switch,
     View,
     Pressable,
-    StatusBar,
+    StatusBar
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -27,14 +27,15 @@ import Animated, {
     useAnimatedGestureHandler,
     useAnimatedStyle,
     useSharedValue,
-    withTiming,
+    withTiming
 } from "react-native-reanimated";
 import { Gesture, GestureDetector, GestureHandlerRootView, PanGestureHandler } from "react-native-gesture-handler";
 import { Link } from "expo-router";
+import OperateItem from "@/components/Home/OperateItem";
 
 export default function HomeScreen() {
     const [data, setData] = useState<any>(undefined);
-    const [oscArr, setOscArr] = useState<any>(oscData?.parameters);
+    const [oscArr, setOscArr] = useState<DataT[]>(oscData?.parameters as DataT[]);
 
     useEffect(() => {
         // console.warn(oscData);
@@ -130,59 +131,11 @@ export default function HomeScreen() {
             <GestureHandlerRootView className="flex-1  pt-16">
                 {/*<Link href="/temp">跳转11</Link>*/}
                 <ScrollView className="flex-1 ">
-                    {oscArr?.map((item: any, index: number) => <ListItem key={index} item={item} index={index} />)}
+                    {oscArr?.map((item: DataT, index: number) => <OperateItem onOperate={handleOperate}
+                                                                              onDelete={handleDelete} key={item.name}
+                                                                              item={item} index={index} />)}
                 </ScrollView>
             </GestureHandlerRootView>
         </LinearGradient>
     );
 }
-
-const ListItem = ({ item, index }: { item: DataT; index: number }) => {
-    const translateX = useSharedValue(0);
-    const startX = useSharedValue(0);
-
-    const panGesture = Gesture.Pan()
-        .activeOffsetX([-10, 10])
-        .onStart(() => {
-            startX.value = translateX.value;
-        })
-        .onUpdate(event => {
-            const newTranslateX = startX.value + event.translationX;
-            translateX.value = Math.min(Math.max(newTranslateX, -100), 0);
-        })
-        .onEnd(event => {
-            translateX.value = withTiming(event.translationX < -100 ? -100 : 0);
-        });
-
-    const rStyle = useAnimatedStyle(() => ({
-        transform: [{ translateX: translateX.value }],
-    }));
-
-    return (
-        <GestureDetector gesture={panGesture}>
-            <Animated.View style={rStyle}>
-                {/*<StatusBar barStyle="light-content" backgroundColor="#CCC" />*/}
-                <View className="flex-row">
-                    <TouchableOpacity
-                        className={`flex-1 my-2 mx-3 p-2 rounded ${item.status ? "bg-green-500" : "bg-red-500"} flex-row items-center justify-between`}
-                        // onPress={() => handleOperate(item, index)}
-                    >
-                        <Text className="text-3xl">{item.name}</Text>
-                        <Switch
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={item.status ? "#f5dd4b" : "#f4f3f4"}
-                            ios_backgroundColor="#3e3e3e"
-                            value={item.status}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        className="bg-red-500 justify-center items-center w-20 absolute -right-[80] top-0"
-                        // onPress={() => runOnJS(handleDelete)(index)}
-                    >
-                        <Text className="text-white text-base">删除1</Text>
-                    </TouchableOpacity>
-                </View>
-            </Animated.View>
-        </GestureDetector>
-    );
-};
