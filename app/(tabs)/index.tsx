@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Platform, TouchableOpacity, Text, NativeEventEmitter} from 'react-native';
+import {Image, StyleSheet, Platform, TouchableOpacity, Text, NativeEventEmitter, ScrollView} from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -7,26 +7,24 @@ import { ThemedView } from '@/components/ThemedView';
 import {useEffect, useState} from "react";
 // @ts-ignore
 import osc from 'react-native-osc';
+import oscData from "./data.json";
+import { DataT } from "@/app/(tabs)/types";
 
 
 export default function HomeScreen() {
     const [data, setData] = useState<any>(undefined);
+    const [oscArr, setOscArr] = useState<any>(oscData?.parameters);
 
     useEffect(() => {
-        console.log(1);
-        console.log(2);
-        console.log(3);
-        console.log(4);
-        console.log(5);
-
+        // console.warn(oscData);
     }, []);
 
     useEffect(() => {
         const eventEmitter = new NativeEventEmitter(osc);
 
         eventEmitter.addListener("GotMessage", (oscMessage) => {
-            console.warn("message: ", oscMessage);
-            if(oscMessage?.address === "/avatar/change"){
+            // console.warn("message: ", oscMessage);
+            if (oscMessage?.address === "/avatar/change") {
                 setData(oscMessage.data?.[0]);
             }
             // setData(oscMessage);
@@ -34,9 +32,9 @@ export default function HomeScreen() {
 
         try {
             osc.createServer("", 9001);
-            console.log('OSC server created successfully');
+            console.log("OSC server created successfully");
         } catch (error) {
-            console.error('Error creating OSC server:', error);
+            console.error("Error creating OSC server:", error);
         }
     }, []);
 
@@ -60,22 +58,22 @@ export default function HomeScreen() {
     }, []);
 
     const handleJump = (param: number) => {
-        osc.sendMessage("/input/Jump", [param])
+        osc.sendMessage("/input/Jump", [param]);
         console.log("sendMessage");
-    }
+    };
 
     const handleAnimate = () => {
         // osc.sendMessage("/avatar/parameters/VRCEmote")
         osc.sendMessage("/avatar/parameters/AFK", true);
         osc.sendMessage("/avatar/parameters/Horns", [false]);
         osc.sendMessage("/avatar/parameters/Sword", [true]);
-    }
+    };
     const handleAnimate2 = () => {
         // osc.sendMessage("/avatar/parameters/VRCEmote")
         osc.sendMessage("/avatar/parameters/AFK", ["True"]);
         osc.sendMessage("/avatar/parameters/Horns", [true]);
         osc.sendMessage("/avatar/parameters/Sword", [false]);
-    }
+    };
 
     const handleAnimate3 = () => {
         // osc.sendMessage("/avatar/parameters/VRCEmote")
@@ -84,86 +82,32 @@ export default function HomeScreen() {
         // osc.sendMessage("/avatar/parameters/AFK", [true]);
         // osc.sendMessage("/avatar/parameters/Horns", [true]);
         // osc.sendMessage("/avatar/parameters/VRCEmote", [1]);
+    };
+
+    const handleOperate = (item: DataT, index: number) => {
+        if(item.input?.type === "Bool") {
+            const status: boolean = item?.status ?? false;
+            console.warn(status, "status");
+            osc.sendMessage(item.input?.address, [!status]);
+            oscArr[index].status = !status;
+            console.warn(oscArr[index]);
+            setOscArr([...oscArr]);
+        }
+        // osc.sendMessage(item.input?.address, [item.value]);
     }
 
 
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">The first step of making vrchat's OSC</ThemedText>
-        <HelloWave />
-      </ThemedView>
-        <Text className="text-5xl bg-red-500">22222</Text>
-        <TouchableOpacity style={{width: "100%", height: 50, backgroundColor: "red"}} onPressIn={() => handleJump(1)} onPressOut={() => handleJump(0)}>
-            <Text>Jump</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{width: "100%", height: 50, backgroundColor: "red"}} onPress={handleAnimate}>
-            <Text>animate</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{width: "100%", height: 50, backgroundColor: "red"}} onPress={handleAnimate2}>
-            <Text>animate2</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={{width: "100%", height: 50, backgroundColor: "red"}} onPress={handleAnimate3}>
-            <Text>animate3</Text>
-        </TouchableOpacity>
-      <ThemedView style={styles.stepContainer}>
-          <Text>{data}</Text>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
+    return (
+        <ScrollView>
+            {oscArr?.map((item: any, index: number) => {
+                return (
+                    <TouchableOpacity key={index}
+                                      className={`m-2 p-2 rounded ${item.status ? "bg-green-500" : "bg-red-500"}`}
+                                      onPress={() => handleOperate(item, index)}>
+                        <Text className="text-3xl">{item.name}</Text>
+                    </TouchableOpacity>
+                );
             })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
-}
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
+        </ScrollView>
+    );
+};

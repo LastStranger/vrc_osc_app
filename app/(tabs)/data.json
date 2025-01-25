@@ -1,0 +1,428 @@
+
+{
+  "id": "avtr_14f38e20-783d-4605-befb-d5c5a776bdc3",
+  "name": "Cerusk Fauna",
+  "hash": -1588779622,
+  "parameters": [
+    {
+      "name": "Horns",
+      "input": {
+        "address": "/avatar/parameters/Horns",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Horns",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "KroniiSword",
+      "input": {
+        "address": "/avatar/parameters/KroniiSword",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/KroniiSword",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Sword",
+      "input": {
+        "address": "/avatar/parameters/Sword",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Sword",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Wings",
+      "input": {
+        "address": "/avatar/parameters/Wings",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Wings",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Crowbar",
+      "input": {
+        "address": "/avatar/parameters/Crowbar",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Crowbar",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Trident",
+      "input": {
+        "address": "/avatar/parameters/Trident",
+        "type": "Int"
+      },
+      "output": {
+        "address": "/avatar/parameters/Trident",
+        "type": "Int"
+      }
+    },
+    {
+      "name": "Scythe",
+      "input": {
+        "address": "/avatar/parameters/Scythe",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Scythe",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Sunhat",
+      "input": {
+        "address": "/avatar/parameters/Sunhat",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Sunhat",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Concoction",
+      "input": {
+        "address": "/avatar/parameters/Concoction",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Concoction",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Calli Hat",
+      "input": {
+        "address": "/avatar/parameters/Calli_Hat",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Calli_Hat",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Pen",
+      "input": {
+        "address": "/avatar/parameters/Pen",
+        "type": "Int"
+      },
+      "output": {
+        "address": "/avatar/parameters/Pen",
+        "type": "Int"
+      }
+    },
+    {
+      "name": "Halo",
+      "input": {
+        "address": "/avatar/parameters/Halo",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Halo",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "DefaultExpression",
+      "input": {
+        "address": "/avatar/parameters/DefaultExpression",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/DefaultExpression",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "RuskSubMenu",
+      "input": {
+        "address": "/avatar/parameters/RuskSubMenu",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/RuskSubMenu",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Ears",
+      "input": {
+        "address": "/avatar/parameters/Ears",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Ears",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Tail",
+      "input": {
+        "address": "/avatar/parameters/Tail",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Tail",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Socks",
+      "input": {
+        "address": "/avatar/parameters/Socks",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Socks",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Shoes",
+      "input": {
+        "address": "/avatar/parameters/Shoes",
+        "type": "Bool"
+      },
+      "output": {
+        "address": "/avatar/parameters/Shoes",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "VRCFaceBlendV",
+      "input": {
+        "address": "/avatar/parameters/VRCFaceBlendV",
+        "type": "Float"
+      },
+      "output": {
+        "address": "/avatar/parameters/VRCFaceBlendV",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "VRCFaceBlendH",
+      "input": {
+        "address": "/avatar/parameters/VRCFaceBlendH",
+        "type": "Float"
+      },
+      "output": {
+        "address": "/avatar/parameters/VRCFaceBlendH",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "VRCEmote",
+      "input": {
+        "address": "/avatar/parameters/VRCEmote",
+        "type": "Int"
+      },
+      "output": {
+        "address": "/avatar/parameters/VRCEmote",
+        "type": "Int"
+      }
+    },
+    {
+      "name": "PreviewMode",
+      "output": {
+        "address": "/avatar/parameters/PreviewMode",
+        "type": "Int"
+      }
+    },
+    {
+      "name": "InStation",
+      "output": {
+        "address": "/avatar/parameters/InStation",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Seated",
+      "output": {
+        "address": "/avatar/parameters/Seated",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "GestureRightWeight",
+      "output": {
+        "address": "/avatar/parameters/GestureRightWeight",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "GestureLeftWeight",
+      "output": {
+        "address": "/avatar/parameters/GestureLeftWeight",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "GestureRight",
+      "output": {
+        "address": "/avatar/parameters/GestureRight",
+        "type": "Int"
+      }
+    },
+    {
+      "name": "GestureLeft",
+      "output": {
+        "address": "/avatar/parameters/GestureLeft",
+        "type": "Int"
+      }
+    },
+    {
+      "name": "Viseme",
+      "output": {
+        "address": "/avatar/parameters/Viseme",
+        "type": "Int"
+      }
+    },
+    {
+      "name": "IsOnFriendsList",
+      "output": {
+        "address": "/avatar/parameters/IsOnFriendsList",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "EyeHeightAsMeters",
+      "output": {
+        "address": "/avatar/parameters/EyeHeightAsMeters",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "EyeHeightAsPercent",
+      "output": {
+        "address": "/avatar/parameters/EyeHeightAsPercent",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "ScaleModified",
+      "output": {
+        "address": "/avatar/parameters/ScaleModified",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "ScaleFactorInverse",
+      "output": {
+        "address": "/avatar/parameters/ScaleFactorInverse",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "ScaleFactor",
+      "output": {
+        "address": "/avatar/parameters/ScaleFactor",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "VelocityMagnitude",
+      "output": {
+        "address": "/avatar/parameters/VelocityMagnitude",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "Earmuffs",
+      "output": {
+        "address": "/avatar/parameters/Earmuffs",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Voice",
+      "output": {
+        "address": "/avatar/parameters/Voice",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "MuteSelf",
+      "output": {
+        "address": "/avatar/parameters/MuteSelf",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "VRMode",
+      "output": {
+        "address": "/avatar/parameters/VRMode",
+        "type": "Int"
+      }
+    },
+    {
+      "name": "TrackingType",
+      "output": {
+        "address": "/avatar/parameters/TrackingType",
+        "type": "Int"
+      }
+    },
+    {
+      "name": "Upright",
+      "output": {
+        "address": "/avatar/parameters/Upright",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "AFK",
+      "output": {
+        "address": "/avatar/parameters/AFK",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "Grounded",
+      "output": {
+        "address": "/avatar/parameters/Grounded",
+        "type": "Bool"
+      }
+    },
+    {
+      "name": "AngularY",
+      "output": {
+        "address": "/avatar/parameters/AngularY",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "VelocityZ",
+      "output": {
+        "address": "/avatar/parameters/VelocityZ",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "VelocityY",
+      "output": {
+        "address": "/avatar/parameters/VelocityY",
+        "type": "Float"
+      }
+    },
+    {
+      "name": "VelocityX",
+      "output": {
+        "address": "/avatar/parameters/VelocityX",
+        "type": "Float"
+      }
+    }
+  ]
+}
