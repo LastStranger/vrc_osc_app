@@ -9,7 +9,7 @@ import {
     Switch,
     View,
     Pressable,
-    StatusBar
+    StatusBar,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -27,7 +27,7 @@ import Animated, {
     useAnimatedGestureHandler,
     useAnimatedStyle,
     useSharedValue,
-    withTiming
+    withTiming,
 } from "react-native-reanimated";
 import { Gesture, GestureDetector, GestureHandlerRootView, PanGestureHandler } from "react-native-gesture-handler";
 import { Link } from "expo-router";
@@ -130,10 +130,16 @@ export default function HomeScreen() {
         >
             <GestureHandlerRootView className="flex-1  pt-16">
                 {/*<Link href="/temp">跳转11</Link>*/}
-                <ScrollView className="flex-1 ">
-                    {oscArr?.map((item: DataT, index: number) => <OperateItem onOperate={handleOperate}
-                                                                              onDelete={handleDelete} key={item.name}
-                                                                              item={item} index={index} />)}
+                <ScrollView className="flex-1">
+                    {oscArr?.map((item: DataT, index: number) => (
+                        <OperateItem
+                            onOperate={handleOperate}
+                            onDelete={handleDelete}
+                            key={item.name}
+                            item={item}
+                            index={index}
+                        />
+                    ))}
                 </ScrollView>
             </GestureHandlerRootView>
         </LinearGradient>

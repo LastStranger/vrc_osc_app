@@ -50,10 +50,10 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                         />
                     </TouchableOpacity>
                     <TouchableOpacity
-                        className="bg-red-500 justify-center items-center w-20 absolute -right-[80] top-0 h-64"
+                        className="bg-red-500 justify-center items-center w-20 absolute -right-[80] top-0 h-[50]"
                         onPress={() => runOnJS(props.onDelete)(index)}
                     >
-                        <Text className="text-white text-base">删除11</Text>
+                        <Text className="text-white text-base">删除</Text>
                     </TouchableOpacity>
                 </View>
             </Animated.View>
