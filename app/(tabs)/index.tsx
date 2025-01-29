@@ -17,7 +17,7 @@ import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 // @ts-ignore
 // import osc from 'react-native-osc';
 import oscData from "./data.json";
@@ -32,10 +32,22 @@ import Animated, {
 import { Gesture, GestureDetector, GestureHandlerRootView, PanGestureHandler } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 import OperateItem from "@/components/Home/OperateItem";
+import { StoreApi, useStore } from "zustand";
+import HomeStore from "@/store/homeStore";
+import { observer } from "mobx-react-lite";
 
-export default function HomeScreen() {
-    const [data, setData] = useState<any>(undefined);
-    const [oscArr, setOscArr] = useState<DataT[]>(oscData?.parameters as DataT[]);
+export const HomeContext = createContext<HomeStore>(undefined as any);
+
+function HomeScreen() {
+    const store = useMemo(() => new HomeStore(), []);
+
+    useEffect(() => {
+        console.log("oscArr change11");
+    }, [store?.oscArr]);
+
+    useEffect(() => {
+        console.log('Store11 actIndex changed:', store.actIndex);
+    }, [store.actIndex]);
 
     useEffect(() => {
         // console.warn(oscData);
@@ -105,43 +117,60 @@ export default function HomeScreen() {
     //     // osc.sendMessage("/avatar/parameters/VRCEmote", [1]);
     // };
 
-    const handleOperate = (item: DataT, index: number) => {
+    const handleOperate = useCallback((item: DataT) => {
         if (item.input?.type === "Bool") {
             const status: boolean = item?.status ?? false;
             console.warn(status, "status");
             // osc.sendMessage(item.input?.address, [!status]);
-            oscArr[index].status = !status;
-            console.warn(oscArr[index]);
-            setOscArr([...oscArr]);
+            // oscArr[index].status = !status;
+            // console.warn(oscArr[index].status, "status");
+            // setOscArr([...oscArr]);
         }
         // osc.sendMessage(item.input?.address, [item.value]);
+    }, []);
+
+    const handleDelete = useCallback((item: any) => {
+        // const newOscArr = oscArr.filter((_: any, i: number) => i !== index);
+        // setOscArr(newOscArr);
+        // setOscArr(prevState => prevState.filter((curr: any, i: number) => curr.name !== item.name));
+    }, []);
+
+    const handleScroll = () => {
+        // console.warn("out scroll");
+        // store.setState({ actIndex: undefined });
+        store.changeActIndex(undefined);
+        console.log("scroll");
     };
 
-    const handleDelete = (index: number) => {
-        const newOscArr = oscArr.filter((_: any, i: number) => i !== index);
-        setOscArr(newOscArr);
-    };
+    console.log("render home out");
 
     return (
-        <LinearGradient
-            style={{ flex: 1 }}
-            // className="flex-1 bg-orange-300"
-            colors={["#09203f", "#537895"]}
-        >
-            <GestureHandlerRootView className="flex-1  pt-16">
-                {/*<Link href="/temp">跳转11</Link>*/}
-                <ScrollView className="flex-1">
-                    {oscArr?.map((item: DataT, index: number) => (
-                        <OperateItem
-                            onOperate={handleOperate}
-                            onDelete={handleDelete}
-                            key={item.name}
-                            item={item}
-                            index={index}
-                        />
-                    ))}
-                </ScrollView>
-            </GestureHandlerRootView>
-        </LinearGradient>
+        <HomeContext.Provider value={store}>
+            <LinearGradient
+                style={{ flex: 1 }}
+                // className="flex-1 bg-orange-300"
+                colors={["#09203f", "#537895"]}
+            >
+                <GestureHandlerRootView className="flex-1  pt-16">
+                    {/*<Dd/>*/}
+                    {/*<Link href="/temp">跳转11</Link>*/}
+                    {/*<Text onPress={() => store.changeActIndex(undefined)}>{999}</Text>*/}
+                    <ScrollView className="flex-1" onScroll={handleScroll}>
+                        {store?.oscArr?.map((item: DataT, index: number) => (
+                            <OperateItem
+                                // onOperate={handleOperate}
+                                // onDelete={handleDelete}
+                                key={item.name}
+                                item={item}
+                                // status={item.status}
+                                index={index}
+                            />
+                        ))}
+                    </ScrollView>
+                </GestureHandlerRootView>
+            </LinearGradient>
+        </HomeContext.Provider>
     );
 }
+
+export default observer(HomeScreen);

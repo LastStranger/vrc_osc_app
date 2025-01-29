@@ -5,4 +5,5 @@ export type DataT = {
         type: "Bool";
     };
     status?: boolean;
+    slideStatus?: boolean;
 }
