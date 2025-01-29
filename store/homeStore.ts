@@ -15,8 +15,7 @@ class HomeStore {
         if (this.oscArr[index]?.input?.type === "Bool") {
             const status: boolean = this.oscArr[index]?.status ?? false;
             this.oscArr[index].status = !status;
-        }else {
-
+        } else {
         }
     };
 
@@ -34,9 +33,14 @@ class HomeStore {
         }
     };
 
-    changeItemSlideStatus = (index: number) => {
-        this.oscArr[index].slideStatus = true;
-        this.actIndex = index;
+    changeItemSlideStatus = (index: number, status: boolean) => {
+        console.log(":=s===status", status);
+        if (status) {
+            this.oscArr[index].slideStatus = true;
+            this.actIndex = index;
+        } else {
+            this.oscArr[this.actIndex ?? 0].slideStatus = false;
+        }
     };
 }
 

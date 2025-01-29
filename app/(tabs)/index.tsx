@@ -138,7 +138,7 @@ function HomeScreen() {
         // console.warn("out scroll");
         // store.setState({ actIndex: undefined });
         store.changeActIndex(undefined);
-        console.log("scroll");
+        // console.log("scroll11");
     };
 
     console.log("render home out");

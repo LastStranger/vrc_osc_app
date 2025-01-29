@@ -48,6 +48,7 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
         .activeOffsetX([-10, 10])
         .onStart(() => {
             startX.value = translateX.value;
+            runOnJS(changeItemSlideStatus)(index ?? 0, false);
         })
         .onUpdate(event => {
             const newTranslateX = startX.value + event.translationX;
@@ -55,7 +56,7 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
         })
         .onEnd(event => {
             translateX.value = withTiming(event.translationX < -50 ? -100 : 0);
-            runOnJS(changeItemSlideStatus)(index);
+            runOnJS(changeItemSlideStatus)(index, true);
         });
 
     const rStyle = useAnimatedStyle(() => ({
