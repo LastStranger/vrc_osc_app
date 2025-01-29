@@ -15,6 +15,8 @@ class HomeStore {
         if (this.oscArr[index]?.input?.type === "Bool") {
             const status: boolean = this.oscArr[index]?.status ?? false;
             this.oscArr[index].status = !status;
+        }else {
+
         }
     };
 

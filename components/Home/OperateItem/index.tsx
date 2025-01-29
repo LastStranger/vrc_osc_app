@@ -11,7 +11,6 @@ import Animated, {
 import { Gesture, GestureDetector, TapGestureHandler } from "react-native-gesture-handler";
 import { Props } from "@/components/Home/OperateItem/types";
 import { HomeContext } from "@/app/(tabs)";
-import { useStore } from "zustand";
 import { index } from "@zxing/text-encoding/es2015/encoding/indexes";
 import { observer } from "mobx-react-lite";
 

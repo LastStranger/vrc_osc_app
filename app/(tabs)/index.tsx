@@ -32,7 +32,6 @@ import Animated, {
 import { Gesture, GestureDetector, GestureHandlerRootView, PanGestureHandler } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 import OperateItem from "@/components/Home/OperateItem";
-import { StoreApi, useStore } from "zustand";
 import HomeStore from "@/store/homeStore";
 import { observer } from "mobx-react-lite";
 
