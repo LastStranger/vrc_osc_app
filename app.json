@@ -10,13 +10,23 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.oh-my-osc"
+      "bundleIdentifier": "com.anonymous.oh-my-osc",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "此应用需要使用麦克风录制语音，以便将中文翻译成英文"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ],
+      "package": "com.anonymous.ohmyosc"
     },
     "web": {
       "bundler": "metro",
@@ -24,6 +34,12 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      [
+        "expo-av",
+        {
+          "microphonePermission": "此应用需要使用麦克风录制语音，以便将中文翻译成英文"
+        }
+      ],
       "expo-router",
       [
         "expo-splash-screen",

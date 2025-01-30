@@ -39,3 +39,7 @@ app-example
 .idea
 ios
 android
+
+.env
+.env.local
+.env.*.local

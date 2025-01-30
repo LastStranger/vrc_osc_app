@@ -50,7 +50,7 @@ export default function TabLayout() {
             />
             <Tabs.Screen
                 name="explore"
-                redirect={true}
+                // redirect={true}
                 options={{
                     title: "Explore",
                     tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />
