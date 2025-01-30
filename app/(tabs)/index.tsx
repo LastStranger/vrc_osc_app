@@ -10,6 +10,7 @@ import {
     View,
     Pressable,
     StatusBar,
+    FlatList,
 } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -45,7 +46,7 @@ function HomeScreen() {
     }, [store?.oscArr]);
 
     useEffect(() => {
-        console.log('Store11 actIndex changed:', store.actIndex);
+        console.log("Store11 actIndex changed:", store.actIndex);
     }, [store.actIndex]);
 
     useEffect(() => {
@@ -116,56 +117,34 @@ function HomeScreen() {
     //     // osc.sendMessage("/avatar/parameters/VRCEmote", [1]);
     // };
 
-    const handleOperate = useCallback((item: DataT) => {
-        if (item.input?.type === "Bool") {
-            const status: boolean = item?.status ?? false;
-            console.warn(status, "status");
-            // osc.sendMessage(item.input?.address, [!status]);
-            // oscArr[index].status = !status;
-            // console.warn(oscArr[index].status, "status");
-            // setOscArr([...oscArr]);
-        }
-        // osc.sendMessage(item.input?.address, [item.value]);
-    }, []);
-
-    const handleDelete = useCallback((item: any) => {
-        // const newOscArr = oscArr.filter((_: any, i: number) => i !== index);
-        // setOscArr(newOscArr);
-        // setOscArr(prevState => prevState.filter((curr: any, i: number) => curr.name !== item.name));
-    }, []);
-
+    // 滑动的时候,关闭激活中的Item
     const handleScroll = () => {
-        // console.warn("out scroll");
-        // store.setState({ actIndex: undefined });
         store.changeActIndex(undefined);
-        // console.log("scroll11");
     };
 
-    console.log("render home out");
+    const renderItem = ({ item, index }: { item: DataT; index: number }) => {
+        return (
+            <OperateItem
+                item={item}
+                index={index}
+            />
+        );
+    };
 
     return (
         <HomeContext.Provider value={store}>
             <LinearGradient
                 style={{ flex: 1 }}
-                // className="flex-1 bg-orange-300"
                 colors={["#09203f", "#537895"]}
             >
                 <GestureHandlerRootView className="flex-1  pt-16">
-                    {/*<Dd/>*/}
-                    {/*<Link href="/temp">跳转11</Link>*/}
-                    {/*<Text onPress={() => store.changeActIndex(undefined)}>{999}</Text>*/}
-                    <ScrollView className="flex-1" onScroll={handleScroll}>
-                        {store?.oscArr?.map((item: DataT, index: number) => (
-                            <OperateItem
-                                // onOperate={handleOperate}
-                                // onDelete={handleDelete}
-                                key={item.name}
-                                item={item}
-                                // status={item.status}
-                                index={index}
-                            />
-                        ))}
-                    </ScrollView>
+                    <FlatList
+                        className="flex-1"
+                        keyExtractor={(item: DataT, index: number) => item.name}
+                        onScroll={handleScroll}
+                        data={store.oscArr}
+                        renderItem={renderItem}
+                    />
                 </GestureHandlerRootView>
             </LinearGradient>
         </HomeContext.Provider>

@@ -2,6 +2,9 @@ import React, { useContext, useEffect } from "react";
 import { Pressable, Switch, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
     CurvedTransition,
+    FadeIn,
+    FadeInDown,
+    FadeOut,
     LinearTransition,
     runOnJS,
     useAnimatedStyle,
@@ -11,39 +14,22 @@ import Animated, {
 import { Gesture, GestureDetector, TapGestureHandler } from "react-native-gesture-handler";
 import { Props } from "@/components/Home/OperateItem/types";
 import { HomeContext } from "@/app/(tabs)";
-import { index } from "@zxing/text-encoding/es2015/encoding/indexes";
 import { observer } from "mobx-react-lite";
 
 const Index: React.FC<Props> = ({ item, index, ...props }) => {
     const translateX = useSharedValue(0);
     const startX = useSharedValue(0);
     const homeStore = useContext(HomeContext);
-    const {changeStatus, deleteOscItem, changeItemSlideStatus } = homeStore;
-    // // const actIndex = useStore(store, s => s.actIndex);
-    // const changeActIndex = useStore(store, s => s.changeActIndex);
-    // const changeStatus = useStore(store, s => s.changeStatus);
-    // const deleteOscItem = useStore(store, s => s.deleteOscItem);
-    // const status = useStore(store, s => s.oscArr[index].status);
+    const { changeStatus, deleteOscItem, changeItemSlideStatus } = homeStore;
 
+    // 如果item的滑动状态变为false，则将translateX设置为0
     useEffect(() => {
-        // if(actIndex !== index && translateX.value !== 0) {
-        //     translateX.value = withTiming(0);
-        // }
-        // console.log(homeStore.actIndex, "actIndexout");
-        // if(homeStore.actIndex === undefined) {
-        //     console.log(homeStore.actIndex, "actIndex111");
-        //     translateX.value = withTiming(0);
-        // }
-        if(item.slideStatus === false){
+        if (item.slideStatus === false) {
             translateX.value = withTiming(0);
         }
     }, [item.slideStatus]);
 
-
-    // useEffect(() => {
-    //     console.log(status, "status");
-    // }, [status]);
-
+    // 滑动手势
     const panGesture = Gesture.Pan()
         .activeOffsetX([-10, 10])
         .onStart(() => {
@@ -84,7 +70,12 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
 
     return (
         <GestureDetector gesture={panGesture}>
-            <Animated.View style={rStyle} layout={CurvedTransition}>
+            <Animated.View
+                style={rStyle}
+                layout={LinearTransition.springify().damping(14)}
+                entering={FadeInDown.springify().damping(14)}
+                exiting={FadeOut.springify().damping(14)}
+            >
                 <View className="flex-row">
                     <TapGestureHandler
                         maxDeltaX={10} // 最大允许的水平滑动距离（像素）
