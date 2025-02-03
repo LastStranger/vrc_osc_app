@@ -8,6 +8,7 @@ import TabBarBackground from "@/components/ui/TabBarBackground";
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { BlurView } from "expo-blur";
+import { LinearGradient } from "expo-linear-gradient";
 
 export default function TabLayout() {
     const colorScheme = useColorScheme();
@@ -18,34 +19,39 @@ export default function TabLayout() {
                 tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
                 headerShown: true,
                 tabBarButton: HapticTab,
-                tabBarBackground: TabBarBackground,
+                tabBarBackground: () => (
+                    <LinearGradient
+                        // colors={["#A3C8FF", "#E0E4FF"]}
+                        colors={["#E0E4FF", "#A3C8FF"]}
+                        start={{ x: 0, y: 0 }}
+                        end={{ x: 0, y: 1 }}
+                        style={{ flex: 1 }}
+                    />
+                ),
                 tabBarStyle: Platform.select({
                     ios: {
                         // Use a transparent background on iOS to show the blur effect
                         position: "absolute",
                         backgroundColor: "transparent",
                     },
-                    default: {}
-                })
-            }}>
+                    default: {},
+                }),
+            }}
+        >
             <Tabs.Screen
                 name="index"
                 options={{
                     headerShown: false,
-                    title: 'OSC',
-                    //   headerTransparent: true,
-                    // headerBackground: () => (
-                    //     <BlurView intensity={50} style={{ flex: 1 }} />
-                    // ),            // headerBackgroundContainerStyle: {backgroundColor: "transparent"},
-                    // headerStyle: {backgroundColor: "transparent"},
-                    // headerBackgroundContainerStyle: {backgroundColor: "transparent"},
-                    // headerTintColor: "red",
-                    // headerBackground: () => "red",
-                    // headerTitleStyle: {backgroundColor: "red"},
-                    // tabBarActiveBackgroundColor: "red",
-                    tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+                    title: "OSC",
+                    tabBarActiveTintColor: "#80C7FF",
+                    // tabBarShowLabel: false,
+                    // tabBarLabelStyle: { color: "#333333", },
+                    // tabBarStyle: { backgroundColor: "red" },
+                    tabBarIcon: ({ color, focused }) => (
+                        <IconSymbol size={28} name="house.fill" color={focused ? "#80C7FF" : color} />
+                    ),
                     tabBarStyle: { backgroundColor: "transparent" },
-                    // tabBarActiveBackgroundColor: "red",
+                    // // tabBarActiveBackgroundColor: "red",
                 }}
             />
             <Tabs.Screen
@@ -53,7 +59,11 @@ export default function TabLayout() {
                 // redirect={true}
                 options={{
                     title: "翻译",
-                    tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />
+                    tabBarActiveTintColor: "#80C7FF",
+                    tabBarIcon: ({ color, focused }) => (
+                        <IconSymbol size={28} name="paperplane.fill" color={focused ? "#80C7FF" : color} />
+                    ),
+                    // tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
                 }}
             />
         </Tabs>
