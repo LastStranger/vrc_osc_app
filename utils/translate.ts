@@ -77,7 +77,7 @@ const tencentTranslate = async (audioBase64: string) => {
     console.log(audioBase64, "audioBase64");
     const endpoint = "tmt.tencentcloudapi.com";
     const service = "tmt";
-    const region = "ap-guangzhou";
+    const region = "ap-shanghai";
     const action = "SpeechTranslate";
     const version = "2018-03-21";
     const payload = {

@@ -5,6 +5,7 @@ import Animated, {
     FadeIn,
     FadeInDown,
     FadeOut,
+    LayoutAnimationConfig,
     LinearTransition,
     runOnJS,
     useAnimatedStyle,
@@ -71,39 +72,53 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
     return (
         <GestureDetector gesture={panGesture}>
             <Animated.View
-                style={rStyle}
                 layout={LinearTransition.springify().damping(14)}
                 entering={FadeInDown.springify().damping(14)}
                 exiting={FadeOut.springify().damping(14)}
             >
-                <View className="flex-row">
+                <Animated.View
+                    className="flex-row"
+                    style={[
+                        {
+                            shadowColor: "#000",
+                            shadowOffset: { width: 0, height: 10 },
+                            shadowRadius: 10,
+                            shadowOpacity: 0.1,
+                            elevation: 5, // Android 需要 elevation
+                        },
+                        rStyle,
+                    ]}
+                >
                     <TapGestureHandler
                         maxDeltaX={10} // 最大允许的水平滑动距离（像素）
                         maxDeltaY={10} // 最大允许的垂直滑动距离（像素）
                         onActivated={handlePress} // 点击事件回调
                     >
                         <View
-                            className={`flex-1 my-2 mx-3 p-2 rounded ${item.status ? "bg-green-500" : "bg-red-500"} flex-row items-center justify-between`}
+                            className={`flex-1 my-2 mx-3 p-2 rounded-lg ${item.status ? "bg-[#80C7FF]" : "bg-[#F5F8FF]"} flex-row items-center justify-between`}
                             // onPress={handlePress}
                         >
-                            <Text className="text-3xl">{item.name}</Text>
+                            <Text className={`text-3xl ${item.status ? "text-white" : "text-default-text"}`}>
+                                {item.name}
+                            </Text>
                             <Switch
                                 // onChange={() => props.onOperate(item)}
                                 onChange={() => handleSwitchStatus(index)}
-                                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                thumbColor={item.status ? "#f5dd4b" : "#f4f3f4"}
-                                ios_backgroundColor="#3e3e3e"
+                                trackColor={{ false: "#D1E6FF", true: "#80C7FF" }}
+                                thumbColor={item.status ? "#FFFFFF" : "#B0C4DE"}
+                                // color="#80C7FF"
+                                ios_backgroundColor="#D1E6FF"
                                 value={item.status}
                             />
                         </View>
                     </TapGestureHandler>
                     <TouchableOpacity
-                        className="bg-red-500 justify-center items-center w-20 absolute -right-[80] top-0 h-[50]"
+                        className="bg-[#FF6B6B] rounded justify-center items-center w-20 absolute -right-[80] top-0 bottom-0 my-2"
                         onPress={() => runOnJS(handleDelete)()}
                     >
                         <Text className="text-white text-base">删除</Text>
                     </TouchableOpacity>
-                </View>
+                </Animated.View>
             </Animated.View>
         </GestureDetector>
     );

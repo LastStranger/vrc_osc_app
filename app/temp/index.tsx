@@ -6,7 +6,7 @@ const Index = () => {
     return (
         <View>
             <Text>just a temp page</Text>
-            <Link href="/temp/tempComponent">
+            <Link href="/(tabs)">
                 <Text>go to temp component11</Text>
                 <Text>go to temp component11</Text>
                 <Text>go to temp component11</Text>

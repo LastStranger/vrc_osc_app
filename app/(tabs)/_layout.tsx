@@ -32,7 +32,7 @@ export default function TabLayout() {
                 name="index"
                 options={{
                     headerShown: false,
-                    // title: 'Home',
+                    title: 'OSC',
                     //   headerTransparent: true,
                     // headerBackground: () => (
                     //     <BlurView intensity={50} style={{ flex: 1 }} />
@@ -52,7 +52,7 @@ export default function TabLayout() {
                 name="explore"
                 // redirect={true}
                 options={{
-                    title: "Explore",
+                    title: "翻译",
                     tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />
                 }}
             />

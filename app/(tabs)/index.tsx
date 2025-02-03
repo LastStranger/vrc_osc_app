@@ -135,9 +135,11 @@ function HomeScreen() {
         <HomeContext.Provider value={store}>
             <LinearGradient
                 style={{ flex: 1 }}
-                colors={["#09203f", "#537895"]}
+                // colors={["#09203f", "#537895"]}
+                colors={['#A3C8FF', '#E0E4FF']} // 背景渐变色
             >
                 <GestureHandlerRootView className="flex-1  pt-16">
+                    {/*<Link href="/temp"><Text>333</Text></Link>*/}
                     <FlatList
                         className="flex-1"
                         keyExtractor={(item: DataT, index: number) => item.name}
