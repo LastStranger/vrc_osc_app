@@ -1,8 +1,10 @@
 import { startRecording, stopRecording } from "@/utils/audio";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, Button, ActivityIndicator } from 'react-native';
 import tencentTranslate from "@/utils/translate";
 import { Audio } from "expo-av";
+// @ts-ignore
+import osc from "react-native-osc";
 
 export default function App() {
     const [isRecording, setIsRecording] = useState(false);
@@ -10,6 +12,12 @@ export default function App() {
     const [sourceTxt, setSourceTxt] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const recordingRef = useRef<any >(null);
+
+    useEffect(() => {
+        const portOut = 9000;
+        const address = "192.168.31.180";
+        osc.createClient(address, portOut);
+    }, []);
 
     const handleRecordPress = async () => {
         if (!isRecording) {
@@ -25,7 +33,9 @@ export default function App() {
             const data = await tencentTranslate(audioBase64 ?? "");
             console.log(data);
             setTranslatedText(data?.target);
-            setSourceTxt(data?.source)
+            setSourceTxt(data?.source);
+
+            osc.sendMessage('/chatbox/input', [data?.target, true, true]);
             // if (chineseText) {
             //     // 机器翻译
             //     const englishText = await tencentTranslate(chineseText);

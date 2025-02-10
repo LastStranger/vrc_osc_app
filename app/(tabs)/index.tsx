@@ -20,7 +20,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 // @ts-ignore
-// import osc from 'react-native-osc';
+import osc from 'react-native-osc';
 import oscData from "./data.json";
 import { DataT } from "@/app/(tabs)/types";
 import Animated, {
@@ -77,8 +77,8 @@ function HomeScreen() {
         // //OSC server IP address like "192.168.1.80" or "localhost"
         //         const address = "192.168.31.180";
         const address = "192.168.31.180";
-        //
-        // //create the client only once in componentDidMount
+
+        //create the client only once in componentDidMount
         //         osc.createClient(address, portOut);
 
         //now you can send OSC messages like this (only after creating a client)
@@ -116,6 +116,10 @@ function HomeScreen() {
     //     // osc.sendMessage("/avatar/parameters/Horns", [true]);
     //     // osc.sendMessage("/avatar/parameters/VRCEmote", [1]);
     // };
+
+    // const handleTrigger = (index: number) => {
+    //     console.log(store.oscArr[index]);
+    // }
 
     // 滑动的时候,关闭激活中的Item
     const handleScroll = () => {

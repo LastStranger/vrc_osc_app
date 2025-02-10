@@ -21,7 +21,7 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
     const translateX = useSharedValue(0);
     const startX = useSharedValue(0);
     const homeStore = useContext(HomeContext);
-    const { changeStatus, deleteOscItem, changeItemSlideStatus } = homeStore;
+    const { changeStatus, deleteOscItem, changeItemSlideStatus, handleTrigger } = homeStore;
 
     // 如果item的滑动状态变为false，则将translateX设置为0
     useEffect(() => {
@@ -29,6 +29,12 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
             translateX.value = withTiming(0);
         }
     }, [item.slideStatus]);
+
+    useEffect(() => {
+        if(item.status){
+            handleTrigger(index);
+        }
+    }, [item.status]);
 
     // 滑动手势
     const panGesture = Gesture.Pan()
@@ -66,8 +72,6 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
         console.log(item.name);
         deleteOscItem(item.name);
     };
-
-    console.log("render small item");
 
     return (
         <GestureDetector gesture={panGesture}>
