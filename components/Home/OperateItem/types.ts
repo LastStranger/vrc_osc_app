@@ -1,4 +1,4 @@
-import { DataT } from "@/app/(tabs)/types";
+import { DataT } from "@/store/types";
 
 export type Props = {
     item: DataT;

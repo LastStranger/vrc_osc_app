@@ -1,4 +1,4 @@
-import { DataT } from "@/app/(tabs)/types";
+import { DataT } from "@/store/types";
 import oscData from "@/app/(tabs)/data.json";
 // import oscData from "@/app/(tabs)/dataBlue.json";
 import { makeAutoObservable } from "mobx";

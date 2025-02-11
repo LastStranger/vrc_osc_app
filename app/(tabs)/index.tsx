@@ -22,7 +22,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 // @ts-ignore
 import osc from 'react-native-osc';
 import oscData from "./data.json";
-import { DataT } from "@/app/(tabs)/types";
+import { DataT } from "@/store/types";
 import Animated, {
     runOnJS,
     useAnimatedGestureHandler,
