@@ -28,14 +28,14 @@ export default function TabLayout() {
                         style={{ flex: 1 }}
                     />
                 ),
-                tabBarStyle: Platform.select({
-                    ios: {
-                        // Use a transparent background on iOS to show the blur effect
-                        position: "absolute",
-                        backgroundColor: "transparent",
-                    },
-                    default: {},
-                }),
+                // tabBarStyle: Platform.select({
+                //     ios: {
+                //         // Use a transparent background on iOS to show the blur effect
+                //         position: "absolute",
+                //         backgroundColor: "transparent",
+                //     },
+                //     default: {},
+                // }),
             }}
         >
             <Tabs.Screen
@@ -55,7 +55,7 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="explore"
+                name="translate"
                 // redirect={true}
                 options={{
                     title: "翻译",
@@ -63,6 +63,7 @@ export default function TabLayout() {
                     tabBarIcon: ({ color, focused }) => (
                         <IconSymbol size={28} name="paperplane.fill" color={focused ? "#80C7FF" : color} />
                     ),
+                    tabBarStyle: { backgroundColor: "transparent" },
                     // tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
                 }}
             />

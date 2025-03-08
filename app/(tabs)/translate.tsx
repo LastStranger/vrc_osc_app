@@ -29,7 +29,7 @@ export default function App() {
     };
 
     const handlePressOut = async () => {
-        if (isRecording) {
+        if (isRecording && recordingRef.current) {
             if (Platform.OS === "ios") {
                 await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
             }
@@ -48,27 +48,30 @@ export default function App() {
     };
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#B8D9FF' }}>
-            <Text style={{ marginTop: 20, fontSize: 18 }}>{translatedText || "翻译结果将显示在这里"}</Text>
-            <Text>sourceTxt: {sourceTxt}</Text>
+        <View className="flex-1 justify-between items-center bg-[#B8D9FF]">
+            <View className="mt-6">
+                <Text className="text-lg text-gray-800 text-center">{translatedText || "翻译结果将显示在这里"}</Text>
+                <Text className="text-lg text-gray-800 text-center">sourceTxt: {sourceTxt}</Text>
+            </View>
             {isLoading && <ActivityIndicator size="large" color="#80C7FF" style={{ marginTop: 20 }} />}
             <Pressable
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
-                className="w-[100] h-[100] bg-red-500 rounded-[50] items-center justify-center mt-6"
+                // className="w-[100] h-[100] bg-red-500 rounded-[50] items-center justify-center mt-6"
+                className="w-[200] h-[200] bg-red-500 rounded-[50] items-center justify-center shadow-lg active:bg-red-600 mb-3"
                 style={({ pressed }) => ({
-                    backgroundColor: pressed ? '#F4A8A8' : '#FF6B6B',
+                    backgroundColor: pressed ? "#F4A8A8" : "#FF6B6B",
                     transform: [{ scale: pressed ? 0.95 : 1 }],
                     padding: 20,
                     borderRadius: 50,
-                    shadowColor: '#000',
+                    shadowColor: "#000",
                     shadowOffset: { width: 0, height: 4 },
                     shadowOpacity: 0.2,
                     shadowRadius: 6,
                     elevation: 6, // 为按钮添加阴影效果
                 })}
             >
-                <Text style={{ color: "white" }}>{isRecording ? "松开停止录音" : "按住说话"}</Text>
+                <Text className="text-white text-lg font-medium">{isRecording ? "松开停止录音" : "按住说话"}</Text>
             </Pressable>
         </View>
     );
