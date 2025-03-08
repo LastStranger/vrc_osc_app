@@ -1,50 +1,48 @@
-# Welcome to your Expo app 👋
+# 🚀 vrc_osc_app
+![GitHub stars](https://img.shields.io/github/stars/laststranger/vrc_osc_app?style=flat-square)
+![GitHub forks](https://img.shields.io/github/forks/laststranger/vrc_osc_app?style=flat-square)
+![GitHub license](https://img.shields.io/github/license/laststranger/vrc_osc_app?style=flat-square)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> ✨ 在手机上利用OSC协议，在VRChat游戏内与模型进行各种交互
 
-## Get started
+## 🌟 当前实现的功能
+- ✅ 手机上操控模型的轮盘上的各种预设
+- ✅ 手机上语音翻译并显示在chatbox上
+- ✅ 。。。。。。
+- ✅ 。。。。。。
 
-1. Install dependencies
+<img src="https://github.com/user-attachments/assets/8bba8b0c-9341-47d3-922f-3f558e34749e" alt="示例截图" width="200">
+<img src="https://github.com/user-attachments/assets/eb6f1a25-a9c1-418a-8311-29b7ae26b61d" alt="示例截图" width="200">
 
-   ```bash
-   npm install
-   ```
+## 📦 安装与使用
+```sh
+# 克隆项目
+git clone https://github.com/laststranger/vrc_osc_app.git
+cd vrc_osc_app
 
-2. Start the app
+# 安装依赖
+npm install
 
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+# 运行项目
+npm run start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## ⚠ 注意事项  
+- 模型的json文件目录在C:\Users\XXX\AppData\LocalLow\VRChat\VRChat\OSC\usr_XXXXXXXX\Avatars目录下，将项目中的data.json文件内容替换操控的模型数据
+- 翻译功能需自己用腾讯云的key，建立一个.env目录，将id和key填入
+EXPO_PUBLIC_TENCENT_SECRET_ID="XXXXX"
+EXPO_PUBLIC_TENCENT_SECRET_KEY="XXXX"
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🤝 贡献指南  
+欢迎任何形式的贡献！你可以：  
+- 📝 提交 Issue 反馈问题  
+- 🔧 Fork 项目并提交 Pull Request  
+- 💡 提出新的功能建议  
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 📜 许可证  
+本项目遵循 **MIT 许可证**。  
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+🚀 **喜欢这个项目的话，欢迎 Star ⭐，让更多人看到它！**  
