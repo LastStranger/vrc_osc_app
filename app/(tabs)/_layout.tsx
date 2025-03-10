@@ -39,7 +39,7 @@ export default function TabLayout() {
             }}
         >
             <Tabs.Screen
-                name="index"
+                name="osc/index"
                 options={{
                     headerShown: false,
                     title: "OSC",
