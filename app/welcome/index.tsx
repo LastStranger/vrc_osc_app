@@ -1,9 +1,11 @@
 import React, { useCallback, useState } from "react";
-import { View, Text, FlatList, Dimensions, StyleSheet } from "react-native";
+import { View, Text, FlatList, Dimensions, StyleSheet, TouchableOpacity } from "react-native";
 import { Marquee } from "@animatereactnative/marquee";
 import { Image } from "expo-image";
 import { cssInterop } from "nativewind";
-import Animated, { runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated";
+import Animated, { FadeIn, FadeOut, runOnJS, useAnimatedReaction, useSharedValue } from "react-native-reanimated";
+import { Stagger } from "@animatereactnative/stagger";
+import { useNavigation } from "expo-router";
 
 cssInterop(Image, { className: "style" });
 
@@ -25,16 +27,21 @@ const images = [
 const Index = () => {
     const offset = useSharedValue(0);
     const [actIndex, setActIndex] = useState(1);
+    const navigation = useNavigation<any>();
 
     useAnimatedReaction(
         () => {
-            const floatIndex = (offset.value / _itemSize) % images.length;
+            const floatIndex = ((offset.value + width / 2) / _itemSize) % images.length;
             return Math.abs(Math.floor(floatIndex));
         },
-        (value) => {
+        value => {
             runOnJS(setActIndex)(value);
         },
     );
+
+    const handleGoToHome = useCallback(() => {
+        navigation.navigate("(tabs)");
+    }, []);
 
     const renderItems = useCallback(({ item }: any) => {
         // return <Image style={{width: 100, height: 100}} source={item} />;
@@ -43,13 +50,30 @@ const Index = () => {
     }, []);
 
     return (
-        <View className="flex-1 bg-red-500 items-center justify-center">
-            <View style={[StyleSheet.absoluteFillObject]}>
-                <Animated.Image key={images[actIndex]} className="flex-1" source={images[actIndex]} />
-            </View>
-            <Marquee speed={3} spacing={_spacing} position={offset}>
-                <FlatList keyExtractor={(item, index) => index.toString()} contentContainerStyle={{ gap: _spacing }} horizontal data={images} renderItem={renderItems} />
+        <View className="flex-1 items-center justify-center bg-black">
+            <Animated.View
+                key={`iamge-${actIndex}`}
+                style={[StyleSheet.absoluteFillObject]}
+                entering={FadeIn.duration(1000)}
+                exiting={FadeOut.duration(1000)}
+            >
+                <Image className="flex-1" blurRadius={50} source={images[actIndex]} />
+            </Animated.View>
+            <Marquee speed={2} spacing={_spacing} position={offset}>
+                <FlatList
+                    scrollEnabled={false}
+                    keyExtractor={(item, index) => index.toString()}
+                    contentContainerStyle={{ gap: _spacing }}
+                    horizontal
+                    data={images}
+                    renderItem={renderItems}
+                />
             </Marquee>
+            <Stagger initialEnteringDelay={1000} duration={500} stagger={100} style={{ flex: 0.5, justifyContent: "center", alignItems: "center" }}>
+                <TouchableOpacity onPress={handleGoToHome}>
+                    <Text className="text-white">欢迎</Text>
+                </TouchableOpacity>
+            </Stagger>
         </View>
     );
 };
