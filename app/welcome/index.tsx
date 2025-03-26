@@ -47,9 +47,7 @@ const Index = () => {
     }, []);
 
     // 绑定 Reanimated 的动画值到 Skia
-    const aTransform = useDerivedValue(() => ([
-        { rotate: (angle.value * Math.PI) / 180 },
-    ]));
+    const aTransform = useDerivedValue(() => [{ rotate: (angle.value * Math.PI) / 180 }]);
 
     useAnimatedReaction(
         () => {
@@ -67,7 +65,14 @@ const Index = () => {
 
     const renderItems = useCallback(({ item }: any) => {
         // return <Image style={{width: 100, height: 100}} source={item} />;
-        return <Image className="rounded-[16]" style={{ width: _itemWidth, height: _itemHeight }} source={item} />;
+        return (
+            <Image
+                className="rounded-[16]"
+                style={{ width: _itemWidth, height: _itemHeight }}
+                source={item}
+                cachePolicy="memory-disk"
+            />
+        );
     }, []);
 
     console.log("rendering");
@@ -80,7 +85,7 @@ const Index = () => {
                 entering={FadeIn.duration(1000)}
                 exiting={FadeOut.duration(1000)}
             >
-                <Image className="flex-1" blurRadius={50} source={images[actIndex]} />
+                <Image className="flex-1" blurRadius={50} source={images[actIndex]} cachePolicy="memory-disk" />
             </Animated.View>
             <Marquee speed={2} spacing={_spacing} position={offset}>
                 <FlatList
@@ -98,14 +103,13 @@ const Index = () => {
                 stagger={100}
                 style={{ flex: 0.5, justifyContent: "flex-end", alignItems: "center" }}
             >
-
                 <View style={styles.container}>
                     <Canvas style={styles.canvas}>
                         {/* 画渐变边框 */}
                         <Rect x={0} y={0} width={160} height={160}>
                             <SweepGradient
                                 c={vec(80, 40)}
-                                origin={{x:80, y: 40}}
+                                origin={{ x: 80, y: 40 }}
                                 colors={["#ff4545", "#00ff99", "#006aff", "#ff0095", "#ff4545"]}
                                 // positions={[0, 0.25, 0.5, 0.75, 1]}
                                 transform={aTransform}
@@ -135,7 +139,7 @@ const styles = StyleSheet.create({
         width: 160,
         height: 60,
         position: "absolute",
-        borderRadius: 10,
+        borderRadius: 30,
         overflow: "hidden",
     },
     button: {
@@ -144,7 +148,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#1c1f2b",
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 10,
+        borderRadius: 25,
         position: "absolute",
     },
     text: {
