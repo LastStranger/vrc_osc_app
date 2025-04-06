@@ -42,7 +42,7 @@ export default function App() {
             setTranslatedText(data?.target);
             setSourceTxt(data?.source);
 
-            osc.sendMessage("/chatbox/input", [data?.target, true, true]);
+            osc.sendMessage("/chatbox/input", [`${data?.target}(${data?.source})`, true, true]);
             setIsLoading(false);
         }
     };
