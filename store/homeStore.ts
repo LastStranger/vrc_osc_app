@@ -8,11 +8,17 @@ import osc from "react-native-osc";
 class HomeStore {
     actIndex?: number = undefined; // 当前激活的index
     oscArr: DataT[] = oscData?.parameters as DataT[]; // osc数组
+    address?: string = undefined; // vrc的IP地址
+    portOut?: string = undefined; // vrc的端口号
 
     constructor() {
         makeAutoObservable(this);
-        const portOut = 9000;
-        const address = "192.168.31.180";
+        // const portOut = 9000;
+        // const address = "192.168.31.180";
+        // osc.createClient(this.address, this.portOut);
+    }
+
+    resetOscClient(address?: string, portOut?: string) {
         osc.createClient(address, portOut);
     }
 

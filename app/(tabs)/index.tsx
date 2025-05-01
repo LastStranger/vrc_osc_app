@@ -35,11 +35,18 @@ import { Link } from "expo-router";
 import OperateItem from "@/components/Home/OperateItem";
 import HomeStore from "@/store/homeStore";
 import { observer } from "mobx-react-lite";
+import { StoreContext } from "@/app/_layout";
 
 export const HomeContext = createContext<HomeStore>(undefined as any);
 
 function HomeScreen() {
     const store = useMemo(() => new HomeStore(), []);
+    const rootStore = useContext(StoreContext);
+
+    useEffect(() => {
+        store.resetOscClient(rootStore?.address, rootStore?.portOut);
+    }, [rootStore?.portOut, rootStore?.address]);
+
 
     useEffect(() => {
         console.log("oscArr change11");

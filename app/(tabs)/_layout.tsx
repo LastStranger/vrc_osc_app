@@ -67,6 +67,19 @@ export default function TabLayout() {
                     // tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
                 }}
             />
+            <Tabs.Screen
+                name="setting"
+                // redirect={true}
+                options={{
+                    title: "设置",
+                    tabBarActiveTintColor: "#80C7FF",
+                    tabBarIcon: ({ color, focused }) => (
+                        <IconSymbol size={28} name="paperplane.fill" color={focused ? "#80C7FF" : color} />
+                    ),
+                    tabBarStyle: { backgroundColor: "transparent" },
+                    // tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+                }}
+            />
         </Tabs>
     );
 }
