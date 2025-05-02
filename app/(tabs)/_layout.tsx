@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import React from "react";
-import { Platform, View } from "react-native";
+import { Ionicons } from '@expo/vector-icons';
 
 import { HapticTab } from "@/components/HapticTab";
 import { IconSymbol } from "@/components/ui/IconSymbol";
@@ -69,15 +69,13 @@ export default function TabLayout() {
             />
             <Tabs.Screen
                 name="setting"
-                // redirect={true}
                 options={{
                     title: "设置",
                     tabBarActiveTintColor: "#80C7FF",
-                    tabBarIcon: ({ color, focused }) => (
-                        <IconSymbol size={28} name="paperplane.fill" color={focused ? "#80C7FF" : color} />
+                    tabBarIcon: ({ color, size }) => (
+                        <Ionicons name="settings-outline" size={size} color={color} />
                     ),
                     tabBarStyle: { backgroundColor: "transparent" },
-                    // tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
                 }}
             />
         </Tabs>

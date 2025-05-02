@@ -102,7 +102,7 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                             className={`flex-1 my-2 mx-3 p-2 rounded-lg ${item.status ? "bg-[#80C7FF]" : "bg-[#F5F8FF]"} flex-row items-center justify-between`}
                             // onPress={handlePress}
                         >
-                            <Text className={`text-3xl ${item.status ? "text-white" : "text-default-text"}`}>
+                            <Text className={`text-3xl ${item.status ? "text-white" : "text-default-text"} flex-1`}>
                                 {item.name}
                             </Text>
                             <Switch
