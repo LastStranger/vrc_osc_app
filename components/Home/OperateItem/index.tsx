@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { Pressable, Switch, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
     CurvedTransition,
@@ -20,8 +20,28 @@ import { observer } from "mobx-react-lite";
 const Index: React.FC<Props> = ({ item, index, ...props }) => {
     const translateX = useSharedValue(0);
     const startX = useSharedValue(0);
-    const homeStore = useContext(HomeContext);
-    const { changeStatus, deleteOscItem, changeItemSlideStatus, handleTrigger } = homeStore;
+    const {store} = useContext(HomeContext);
+    const { changeStatus, deleteOscItem, changeItemSlideStatus, handleTrigger } = store;
+
+    // useEffect(() => {
+    //     console.warn("initial renderinitial renderinitial renderinitial renderinitial render");
+    // }, []);
+    //
+    // useEffect(() => {
+    //     console.warn("changeStatus:", index);
+    // }, [changeStatus]);
+    //
+    // useEffect(() => {
+    //     console.warn("deleteOscItem:");
+    // }, [deleteOscItem]);
+    //
+    // useEffect(() => {
+    //     console.warn("changeItemSlideStatus:");
+    // }, [changeItemSlideStatus]);
+    //
+    // useEffect(() => {
+    //     console.warn("handleTrigger:");
+    // }, [handleTrigger]);
 
     // 如果item的滑动状态变为false，则将translateX设置为0
     useEffect(() => {
@@ -34,44 +54,51 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
         if(item.status){
             handleTrigger(index);
         }
-    }, [item.status]);
+    }, [item.status, index, handleTrigger]);
 
     // 滑动手势
-    const panGesture = Gesture.Pan()
-        .activeOffsetX([-10, 10])
-        .onStart(() => {
-            startX.value = translateX.value;
-            runOnJS(changeItemSlideStatus)(index ?? 0, false);
-        })
-        .onUpdate(event => {
-            const newTranslateX = startX.value + event.translationX;
-            translateX.value = Math.min(Math.max(newTranslateX, -100), 0);
-        })
-        .onEnd(event => {
-            translateX.value = withTiming(event.translationX < -50 ? -100 : 0);
-            runOnJS(changeItemSlideStatus)(index, true);
-        });
+    const panGesture = useMemo(() =>
+            Gesture.Pan()
+                .activeOffsetX([-10, 10])
+                .onStart(() => {
+                    startX.value = translateX.value;
+                    runOnJS(changeItemSlideStatus)(index ?? 0, false);
+                })
+                .onUpdate(event => {
+                    const newTranslateX = startX.value + event.translationX;
+                    translateX.value = Math.min(Math.max(newTranslateX, -100), 0);
+                })
+                .onEnd(event => {
+                    translateX.value = withTiming(event.translationX < -50 ? -100 : 0);
+                    runOnJS(changeItemSlideStatus)(index, true);
+                }),
+        [index, changeItemSlideStatus]
+    );
+
 
     const rStyle = useAnimatedStyle(() => ({
         transform: [{ translateX: translateX.value }],
     }));
 
     // 点击回归item初始状态
-    const handlePress = () => {
+    const handlePress = useCallback(() => {
         translateX.value = withTiming(0);
-        console.warn(123123);
-    };
+    }, []);
+
 
     // 切换状态
-    const handleSwitchStatus = (index: number) => {
+    const handleSwitchStatus = useCallback((index: number) => {
         changeStatus(index);
-    };
+    }, [changeStatus]);
+
 
     // 删除item
-    const handleDelete = () => {
-        console.log(item.name);
+    const handleDelete = useCallback(() => {
         deleteOscItem(item.name);
-    };
+    }, [deleteOscItem, item.name]);
+
+
+    // console.warn("item render");
 
     return (
         <GestureDetector gesture={panGesture}>
@@ -103,7 +130,7 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                             // onPress={handlePress}
                         >
                             <Text className={`text-3xl ${item.status ? "text-white" : "text-default-text"} flex-1`}>
-                                {item.name}
+                                {item.name}{index}
                             </Text>
                             <Switch
                                 // onChange={() => props.onOperate(item)}

@@ -1,3 +1,5 @@
+import HomeStore from "@/store/homeStore";
+
 export type DataT = {
     name: string;
     input: {
@@ -6,4 +8,8 @@ export type DataT = {
     };
     status?: boolean;
     slideStatus?: boolean;
+}
+
+export type HomeContextT ={
+    store: HomeStore
 }

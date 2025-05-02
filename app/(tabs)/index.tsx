@@ -22,7 +22,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 // @ts-ignore
 import osc from 'react-native-osc';
 import oscData from "./data.json";
-import { DataT } from "@/store/types";
+import { DataT, HomeContextT } from "@/store/types";
 import Animated, {
     runOnJS,
     useAnimatedGestureHandler,
@@ -37,28 +37,33 @@ import HomeStore from "@/store/homeStore";
 import { observer } from "mobx-react-lite";
 import { StoreContext } from "@/app/_layout";
 
-export const HomeContext = createContext<HomeStore>(undefined as any);
+export const HomeContext = createContext<HomeContextT>({} as any);
 
 function HomeScreen() {
     const store = useMemo(() => new HomeStore(), []);
     const rootStore = useContext(StoreContext);
+    const contextValue = useMemo(() => ({ store }), [store]);
 
     useEffect(() => {
         store.resetOscClient(rootStore?.address, rootStore?.portOut);
     }, [rootStore?.portOut, rootStore?.address]);
 
-
     useEffect(() => {
-        console.log("oscArr change11");
-    }, [store?.oscArr]);
+        store.resetOscArr(rootStore?.avatarInfo);
+    }, [rootStore?.avatarInfo]);
 
-    useEffect(() => {
-        console.log("Store11 actIndex changed:", store.actIndex);
-    }, [store.actIndex]);
 
-    useEffect(() => {
-        // console.warn(oscData);
-    }, []);
+    // useEffect(() => {
+    //     console.log("oscArr change11");
+    // }, [store?.oscArr]);
+
+    // useEffect(() => {
+    //     console.log("Store11 actIndex changed:", store.actIndex);
+    // }, [store.actIndex]);
+
+    // useEffect(() => {
+    //     // console.warn(oscData);
+    // }, []);
 
     useEffect(() => {
         // const eventEmitter = new NativeEventEmitter(osc);
@@ -128,22 +133,29 @@ function HomeScreen() {
     //     console.log(store.oscArr[index]);
     // }
 
+    // const getItemLayout = useCallback((data: any, index: number) => ({
+    //     length: 某个固定高度,  // item的高度
+    //     offset: 某个固定高度 * index,
+    //     index,
+    // }), []);
+
     // 滑动的时候,关闭激活中的Item
     const handleScroll = () => {
         store.changeActIndex(undefined);
     };
 
-    const renderItem = ({ item, index }: { item: DataT; index: number }) => {
+    const renderItem = useCallback(({ item, index }: { item: DataT; index: number }) => {
         return (
             <OperateItem
                 item={item}
                 index={index}
             />
         );
-    };
+    }, []);
+
 
     return (
-        <HomeContext.Provider value={store}>
+        <HomeContext.Provider value={contextValue}>
             <LinearGradient
                 style={{ flex: 1 }}
                 // colors={["#09203f", "#537895"]}
@@ -153,15 +165,35 @@ function HomeScreen() {
                     {/*<Link href="/temp"><Text>333</Text></Link>*/}
                     <FlatList
                         className="flex-1"
+                        // contentContainerStyle={{ flex:1 }}
                         keyExtractor={(item: DataT, index: number) => item.name}
                         onScroll={handleScroll}
                         data={store.oscArr}
                         renderItem={renderItem}
+                        ListEmptyComponent={EmptyListComponent}
+
+                        windowSize={20}  // 控制渲染窗口为5个items
+                        maxToRenderPerBatch={30}  // 每批次渲染的最大数量
+                        updateCellsBatchingPeriod={50} // 批量渲染的时间窗口
+                        removeClippedSubviews={true}  // 移除屏幕外的视图
+                        initialNumToRender={10}  // 初始渲染数量
+                        // getItemLayout={getItemLayout} // 固定高度布局
+
                     />
                 </GestureHandlerRootView>
             </LinearGradient>
         </HomeContext.Provider>
     );
 }
+
+function EmptyListComponent() {
+    return (
+        <View className="flex-1 items-center justify-center">
+            <Text className="text-gray-500 text-lg">暂无数据</Text>
+            <Text className="text-gray-400 mt-2">请去设置添加Avatar数据</Text>
+        </View>
+    );
+}
+
 
 export default observer(HomeScreen);

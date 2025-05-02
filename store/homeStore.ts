@@ -1,15 +1,16 @@
 import { DataT } from "@/store/types";
-import oscData from "@/app/(tabs)/data.json";
-// import oscData from "@/app/(tabs)/dataBlue.json";
+import oscDataDemo1 from "@/app/(tabs)/data.json";
+import oscDataDemo2 from "@/app/(tabs)/dataBlue.json";
 import { makeAutoObservable } from "mobx";
 // @ts-ignore
 import osc from "react-native-osc";
 
 class HomeStore {
     actIndex?: number = undefined; // 当前激活的index
-    oscArr: DataT[] = oscData?.parameters as DataT[]; // osc数组
-    address?: string = undefined; // vrc的IP地址
-    portOut?: string = undefined; // vrc的端口号
+    // oscArr: DataT[] = oscData?.parameters as DataT[]; // osc数组
+    oscArr: DataT[] = []; // osc数组
+    // address?: string = undefined; // vrc的IP地址
+    // portOut?: string = undefined; // vrc的端口号
 
     constructor() {
         makeAutoObservable(this);
@@ -18,9 +19,16 @@ class HomeStore {
         // osc.createClient(this.address, this.portOut);
     }
 
+    // 重新设置客osc的IP地址和端口号
     resetOscClient(address?: string, portOut?: string) {
         osc.createClient(address, portOut);
     }
+
+    // 重新设置avatar数据
+    resetOscArr(avatarInfoArr?: DataT[]): void {
+       this.oscArr = avatarInfoArr ?? [];
+    }
+
 
     // 切换状态
     changeStatus = (index: number) => {
