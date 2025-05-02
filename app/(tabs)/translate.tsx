@@ -1,13 +1,15 @@
 import { startRecording, stopRecording } from "@/utils/audio";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { View, Text, Button, ActivityIndicator, Pressable, Platform } from "react-native";
 import tencentTranslate from "@/utils/translate";
 import { Audio } from "expo-av";
 // @ts-ignore
 import osc from "react-native-osc";
 import * as Haptics from "expo-haptics";
+import { StoreContext } from "@/app/_layout";
 
 export default function App() {
+    const rootStore = useContext(StoreContext);
     const [isRecording, setIsRecording] = useState(false);
     const [translatedText, setTranslatedText] = useState("");
     const [sourceTxt, setSourceTxt] = useState("");
@@ -15,10 +17,11 @@ export default function App() {
     const recordingRef = useRef<any>(null);
 
     useEffect(() => {
-        const portOut = 9000;
-        const address = "192.168.31.180";
-        osc.createClient(address, portOut);
-    }, []);
+        // const portOut = 9000;
+        // const address = "192.168.31.180";
+        // osc.createClient(address, portOut);
+        osc.createClient(rootStore?.address, rootStore?.portOut);
+    }, [rootStore?.address, rootStore?.portOut]);
     const handlePressIn = async () => {
         // 触发触觉反馈
         if (Platform.OS === "ios") {
