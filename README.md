@@ -32,7 +32,7 @@ npm run start
 - 翻译功能需自己用腾讯云的key，建立一个.env目录，将id和key填入
 EXPO_PUBLIC_TENCENT_SECRET_ID="XXXXX"
 EXPO_PUBLIC_TENCENT_SECRET_KEY="XXXX"
-- 目前该需要自己打包使用，生产包等我有时间再弄吧
+- 目前该项目需要自己打包使用，生产包等我有时间再弄吧
 
 
 ## 🤝 贡献指南  
