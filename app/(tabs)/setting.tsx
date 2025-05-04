@@ -56,7 +56,7 @@ const Setting = () => {
                     />
                 </View>
                 {/* Avatar JSON 输入区域 */}
-                <View className="flex-row items-center py-4 pr-4 border-b border-b-gray-200">
+                <View className="flex-row items-center py-4 pr-4">
                     <Text className="text-black w-[20%] text-xl ">Avatar</Text>
                     <TextInput
                         multiline
@@ -68,7 +68,7 @@ const Setting = () => {
                 </View>
             </View>
             {/* 示例按钮区域 */}
-            <View className="flex-row justify-around mt-6 mx-4">
+            <View className="flex-row justify-between mt-6 mx-4">
                 <TouchableOpacity
                     className="bg-[#80C7FF] px-6 py-3 rounded-full w-[45%]"
                     onPress={handleDemoAvatar}

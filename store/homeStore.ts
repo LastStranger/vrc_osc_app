@@ -1,22 +1,35 @@
 import { DataT } from "@/store/types";
-import oscDataDemo1 from "@/app/(tabs)/data.json";
-import oscDataDemo2 from "@/app/(tabs)/dataBlue.json";
-import { makeAutoObservable } from "mobx";
+import { autorun, IReactionDisposer, makeAutoObservable } from "mobx";
 // @ts-ignore
 import osc from "react-native-osc";
+import RootStore from "@/store/rootStore";
 
 class HomeStore {
     actIndex?: number = undefined; // 当前激活的index
     // oscArr: DataT[] = oscData?.parameters as DataT[]; // osc数组
     oscArr: DataT[] = []; // osc数组
+    rootStore: RootStore;
+    private disposers: IReactionDisposer[] = [];
     // address?: string = undefined; // vrc的IP地址
     // portOut?: string = undefined; // vrc的端口号
 
-    constructor() {
+    constructor(rootStore: RootStore) {
         makeAutoObservable(this);
+        this.rootStore = rootStore;
         // const portOut = 9000;
         // const address = "192.168.31.180";
         // osc.createClient(this.address, this.portOut);
+        // 存储 disposer 函数以便后续清理
+        this.disposers.push(
+            autorun(() => {
+                // 重新设置客osc的IP地址和端口号
+                this.resetOscArr(this.rootStore.avatarInfo);
+            }),
+            autorun(() => {
+                // 重新设置avatar数据
+                this.resetOscClient(this.rootStore.address, this.rootStore.portOut);
+            })
+        );
     }
 
     // 重新设置客osc的IP地址和端口号
@@ -27,6 +40,7 @@ class HomeStore {
     // 重新设置avatar数据
     resetOscArr(avatarInfoArr?: DataT[]): void {
        this.oscArr = avatarInfoArr ?? [];
+       this.actIndex = undefined;
     }
 
 
@@ -76,6 +90,13 @@ class HomeStore {
         //     osc.sendMessage(params, [true]);
         // }
     }
+
+    // 清理方法
+    dispose() {
+        this.disposers.forEach(dispose => dispose());
+        this.disposers = [];
+    }
+
 }
 
 export default HomeStore;

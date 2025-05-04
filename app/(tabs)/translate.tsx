@@ -1,14 +1,14 @@
 import { startRecording, stopRecording } from "@/utils/audio";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { View, Text, Button, ActivityIndicator, Pressable, Platform } from "react-native";
+import { View, Text, ActivityIndicator, Pressable, Platform } from "react-native";
 import tencentTranslate from "@/utils/translate";
-import { Audio } from "expo-av";
 // @ts-ignore
 import osc from "react-native-osc";
 import * as Haptics from "expo-haptics";
 import { StoreContext } from "@/app/_layout";
+import { observer } from "mobx-react-lite";
 
-export default function App() {
+const Index = () => {
     const rootStore = useContext(StoreContext);
     const [isRecording, setIsRecording] = useState(false);
     const [translatedText, setTranslatedText] = useState("");
@@ -60,7 +60,6 @@ export default function App() {
             <Pressable
                 onPressIn={handlePressIn}
                 onPressOut={handlePressOut}
-                // className="w-[100] h-[100] bg-red-500 rounded-[50] items-center justify-center mt-6"
                 className="w-[200] h-[200] bg-red-500 rounded-[50] items-center justify-center shadow-lg active:bg-red-600 mb-3"
                 style={({ pressed }) => ({
                     backgroundColor: pressed ? "#F4A8A8" : "#FF6B6B",
@@ -79,3 +78,5 @@ export default function App() {
         </View>
     );
 }
+
+export default observer(Index);

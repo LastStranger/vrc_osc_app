@@ -1,37 +1,9 @@
-import {
-    Image,
-    StyleSheet,
-    Platform,
-    TouchableOpacity,
-    Text,
-    NativeEventEmitter,
-    ScrollView,
-    Switch,
-    View,
-    Pressable,
-    StatusBar,
-    FlatList,
-} from "react-native";
+import { Text, View, FlatList } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-// @ts-ignore
-import osc from 'react-native-osc';
-import oscData from "./data.json";
+import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
 import { DataT, HomeContextT } from "@/store/types";
-import Animated, {
-    runOnJS,
-    useAnimatedGestureHandler,
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
-} from "react-native-reanimated";
 import { Gesture, GestureDetector, GestureHandlerRootView, PanGestureHandler } from "react-native-gesture-handler";
-import { Link } from "expo-router";
 import OperateItem from "@/components/Home/OperateItem";
 import HomeStore from "@/store/homeStore";
 import { observer } from "mobx-react-lite";
@@ -40,30 +12,24 @@ import { StoreContext } from "@/app/_layout";
 export const HomeContext = createContext<HomeContextT>({} as any);
 
 function HomeScreen() {
-    const store = useMemo(() => new HomeStore(), []);
     const rootStore = useContext(StoreContext);
+    const store = useMemo(() => new HomeStore(rootStore!), []);
     const contextValue = useMemo(() => ({ store }), [store]);
 
     useEffect(() => {
-        store.resetOscClient(rootStore?.address, rootStore?.portOut);
-    }, [rootStore?.portOut, rootStore?.address]);
-
-    useEffect(() => {
-        store.resetOscArr(rootStore?.avatarInfo);
-    }, [rootStore?.avatarInfo]);
-
+        return () => {
+            store.dispose();
+        };
+    }, [store]);
 
     // useEffect(() => {
-    //     console.log("oscArr change11");
-    // }, [store?.oscArr]);
-
+    //     store.resetOscClient(rootStore?.address, rootStore?.portOut);
+    // }, [rootStore?.portOut, rootStore?.address]);
+    //
+    // //监听avatarInfo的变化
     // useEffect(() => {
-    //     console.log("Store11 actIndex changed:", store.actIndex);
-    // }, [store.actIndex]);
-
-    // useEffect(() => {
-    //     // console.warn(oscData);
-    // }, []);
+    //     store.resetOscArr(rootStore?.avatarInfo);
+    // }, [rootStore?.avatarInfo]);
 
     useEffect(() => {
         // const eventEmitter = new NativeEventEmitter(osc);
@@ -129,28 +95,13 @@ function HomeScreen() {
     //     // osc.sendMessage("/avatar/parameters/VRCEmote", [1]);
     // };
 
-    // const handleTrigger = (index: number) => {
-    //     console.log(store.oscArr[index]);
-    // }
-
-    // const getItemLayout = useCallback((data: any, index: number) => ({
-    //     length: 某个固定高度,  // item的高度
-    //     offset: 某个固定高度 * index,
-    //     index,
-    // }), []);
-
     // 滑动的时候,关闭激活中的Item
     const handleScroll = () => {
         store.changeActIndex(undefined);
     };
 
     const renderItem = useCallback(({ item, index }: { item: DataT; index: number }) => {
-        return (
-            <OperateItem
-                item={item}
-                index={index}
-            />
-        );
+        return <OperateItem item={item} index={index} />;
     }, []);
 
 
@@ -158,11 +109,9 @@ function HomeScreen() {
         <HomeContext.Provider value={contextValue}>
             <LinearGradient
                 style={{ flex: 1 }}
-                // colors={["#09203f", "#537895"]}
-                colors={['#A3C8FF', '#E0E4FF']} // 背景渐变色
+                colors={["#A3C8FF", "#E0E4FF"]} // 背景渐变色
             >
                 <GestureHandlerRootView className="flex-1  pt-16">
-                    {/*<Link href="/temp"><Text>333</Text></Link>*/}
                     <FlatList
                         className="flex-1"
                         // contentContainerStyle={{ flex:1 }}
@@ -171,14 +120,12 @@ function HomeScreen() {
                         data={store.oscArr}
                         renderItem={renderItem}
                         ListEmptyComponent={EmptyListComponent}
-
-                        windowSize={20}  // 控制渲染窗口为5个items
-                        maxToRenderPerBatch={30}  // 每批次渲染的最大数量
+                        windowSize={20} // 控制渲染窗口为5个items
+                        maxToRenderPerBatch={30} // 每批次渲染的最大数量
                         updateCellsBatchingPeriod={50} // 批量渲染的时间窗口
-                        removeClippedSubviews={true}  // 移除屏幕外的视图
-                        initialNumToRender={10}  // 初始渲染数量
+                        // removeClippedSubviews={true} // 移除屏幕外的视图
+                        initialNumToRender={10} // 初始渲染数量
                         // getItemLayout={getItemLayout} // 固定高度布局
-
                     />
                 </GestureHandlerRootView>
             </LinearGradient>
@@ -194,6 +141,5 @@ function EmptyListComponent() {
         </View>
     );
 }
-
 
 export default observer(HomeScreen);

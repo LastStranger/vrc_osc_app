@@ -130,7 +130,7 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                             // onPress={handlePress}
                         >
                             <Text className={`text-3xl ${item.status ? "text-white" : "text-default-text"} flex-1`}>
-                                {item.name}{index}
+                                {item.name}
                             </Text>
                             <Switch
                                 // onChange={() => props.onOperate(item)}
