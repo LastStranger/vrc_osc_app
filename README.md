@@ -30,9 +30,9 @@ npm run start
 ## ⚠ 注意事项  
 - 模型的json文件目录在C:\Users\XXX\AppData\LocalLow\VRChat\VRChat\OSC\usr_XXXXXXXX\Avatars目录下，将项目中的data.json文件内容替换操控的模型数据
 - 翻译功能需自己用腾讯云的key，建立一个.env目录，将id和key填入
-- 目前该需要自己打包使用，生产包等我有时间再弄吧
 EXPO_PUBLIC_TENCENT_SECRET_ID="XXXXX"
 EXPO_PUBLIC_TENCENT_SECRET_KEY="XXXX"
+- 目前该需要自己打包使用，生产包等我有时间再弄吧
 
 
 ## 🤝 贡献指南  
