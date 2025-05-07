@@ -5,6 +5,7 @@ import { StoreContext } from "@/app/_layout";
 
 const Setting = () => {
     const store = useContext(StoreContext);
+    //todo保存配置,笔记在notion上
 
     // 处理地址输入变化
     const handleAddressChange = useCallback((text: string) => {

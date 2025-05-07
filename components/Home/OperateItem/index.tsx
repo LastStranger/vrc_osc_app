@@ -16,11 +16,12 @@ import { Gesture, GestureDetector, TapGestureHandler } from "react-native-gestur
 import { Props } from "@/components/Home/OperateItem/types";
 import { HomeContext } from "@/app/(tabs)";
 import { observer } from "mobx-react-lite";
+import { DataT } from "@/store/types";
 
 const Index: React.FC<Props> = ({ item, index, ...props }) => {
     const translateX = useSharedValue(0);
     const startX = useSharedValue(0);
-    const {store} = useContext(HomeContext);
+    const { store } = useContext(HomeContext);
     const { changeStatus, deleteOscItem, changeItemSlideStatus, handleTrigger } = store;
 
     // useEffect(() => {
@@ -51,13 +52,14 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
     }, [item.slideStatus]);
 
     useEffect(() => {
-        if(item.status){
+        if (item.status) {
             handleTrigger(index);
         }
     }, [item.status, index, handleTrigger]);
 
     // 滑动手势
-    const panGesture = useMemo(() =>
+    const panGesture = useMemo(
+        () =>
             Gesture.Pan()
                 .activeOffsetX([-10, 10])
                 .onStart(() => {
@@ -72,9 +74,8 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                     translateX.value = withTiming(event.translationX < -50 ? -100 : 0);
                     runOnJS(changeItemSlideStatus)(index, true);
                 }),
-        [index, changeItemSlideStatus]
+        [index, changeItemSlideStatus],
     );
-
 
     const rStyle = useAnimatedStyle(() => ({
         transform: [{ translateX: translateX.value }],
@@ -85,18 +86,31 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
         translateX.value = withTiming(0);
     }, []);
 
-
     // 切换状态
-    const handleSwitchStatus = useCallback((index: number) => {
-        changeStatus(index);
-    }, [changeStatus]);
-
+    const handleSwitchStatus = useCallback(
+        (index: number) => {
+            changeStatus(index);
+        },
+        [changeStatus],
+    );
 
     // 删除item
     const handleDelete = useCallback(() => {
         deleteOscItem(item.name);
     }, [deleteOscItem, item.name]);
 
+    const getTextColorClass = (item: DataT) => {
+        // 基础样式包含文字大小
+        const baseStyle = "text-3xl  flex-1";
+
+        // 如果不是 Bool 类型，显示为灰色（禁用状态）
+        if (item.input?.type !== "Bool") {
+            return `${baseStyle} text-gray-400`;
+        }
+
+        // 是 Bool 类型，根据激活状态显示白色或黑色
+        return `${baseStyle} ${item.status ? "text-white" : "text-black"}`;
+    };
 
     // console.warn("item render");
 
@@ -129,7 +143,7 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                             className={`flex-1 my-2 mx-3 p-2 rounded-lg ${item.status ? "bg-[#80C7FF]" : "bg-[#F5F8FF]"} flex-row items-center justify-between`}
                             // onPress={handlePress}
                         >
-                            <Text className={`text-3xl ${item.status ? "text-white" : "text-default-text"} flex-1`}>
+                            <Text className={getTextColorClass(item)}>
                                 {item.name}
                             </Text>
                             <Switch

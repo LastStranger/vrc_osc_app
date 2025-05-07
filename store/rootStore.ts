@@ -10,7 +10,9 @@ export class RootStore {
     avatarInfo?: DataT[] = [];
     avatarInputString?: string = undefined;
     constructor() {
-        makeAutoObservable(this);
+        makeAutoObservable(this, {}, {
+            autoBind: true // 自动绑定方法
+        });
         this.initAvatarInfo();
     }
 

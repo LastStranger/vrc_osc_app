@@ -1,8 +1,10 @@
 import { DataT } from "@/store/types";
-import { autorun, IReactionDisposer, makeAutoObservable } from "mobx";
+import { autorun, IReactionDisposer, makeAutoObservable, runInAction } from "mobx";
 // @ts-ignore
 import osc from "react-native-osc";
 import RootStore from "@/store/rootStore";
+import { Alert } from "react-native";
+import { storage } from "@/store/mmkv";
 
 class HomeStore {
     actIndex?: number = undefined; // 当前激活的index
@@ -14,7 +16,9 @@ class HomeStore {
     // portOut?: string = undefined; // vrc的端口号
 
     constructor(rootStore: RootStore) {
-        makeAutoObservable(this);
+        makeAutoObservable(this, {}, {
+            autoBind: true // 自动绑定方法
+        });
         this.rootStore = rootStore;
         // const portOut = 9000;
         // const address = "192.168.31.180";
@@ -33,14 +37,17 @@ class HomeStore {
     }
 
     // 重新设置客osc的IP地址和端口号
-    resetOscClient(address?: string, portOut?: string) {
+    resetOscClient = (address?: string, portOut?: string) => {
         osc.createClient(address, portOut);
     }
 
     // 重新设置avatar数据
-    resetOscArr(avatarInfoArr?: DataT[]): void {
-       this.oscArr = avatarInfoArr ?? [];
-       this.actIndex = undefined;
+    resetOscArr = (avatarInfoArr?: DataT[]): void => {
+        // todo 为什么这里要包裹一层runInAction
+        runInAction(() => {
+            this.oscArr = avatarInfoArr ?? [];
+            this.actIndex = undefined;
+        });
     }
 
 
@@ -54,12 +61,22 @@ class HomeStore {
             // osc.sendMessage("/chatbox/input", ["hello world"]);
             // osc.sendMessage('/chatbox/input', ["hello world", true, true]);
         } else {
+            //提示无法切换
+            // 使用Alert显示提示
+            Alert.alert(
+                "提示",
+                "当前类型无法切换状态",
+                [
+                    { text: "确定", onPress: () => console.log("OK Pressed") }
+                ]
+            );
         }
     };
 
     // 删除item
     deleteOscItem = (name: string) => {
         this.oscArr = this.oscArr.filter((item: DataT) => item.name !== name);
+        storage.set("avatarInfo", JSON.stringify(this.oscArr));
     };
 
     changeActIndex = (index?: number) => {
@@ -92,7 +109,7 @@ class HomeStore {
     }
 
     // 清理方法
-    dispose() {
+    dispose = () => {
         this.disposers.forEach(dispose => dispose());
         this.disposers = [];
     }
