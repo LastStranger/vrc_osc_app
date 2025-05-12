@@ -5,8 +5,8 @@ import oscDataDemo2 from "@/app/(tabs)/dataBlue.json";
 import { DataT } from "@/store/types";
 
 export class RootStore {
-    address?: string = storage.getString("address") ?? "192.168.0.1"; // vrc的IP地址
-    portOut?: number = storage.getNumber("portOut") ?? 9000; // vrc的端口号
+    address: string = storage.getString("address") ?? "192.168.0.1"; // vrc的IP地址
+    portOut: number = storage.getNumber("portOut") ?? 9000; // vrc的端口号
     avatarInfo?: DataT[] = [];
     avatarInputString?: string = undefined;
     constructor() {

@@ -2,8 +2,7 @@ import { startRecording, stopRecording } from "@/utils/audio";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { View, Text, ActivityIndicator, Pressable, Platform } from "react-native";
 import tencentTranslate from "@/utils/translate";
-// @ts-ignore
-import osc from "react-native-osc";
+import osc from "react-native-vrc-osc";
 import * as Haptics from "expo-haptics";
 import { StoreContext } from "@/app/_layout";
 import { observer } from "mobx-react-lite";
@@ -22,8 +21,8 @@ const Index = () => {
         // const address = "192.168.31.180";
         // osc.createClient(address, portOut);
         if(rootStore?.address && rootStore?.portOut){
-            console.warn(rootStore?.address, rootStore?.portOut);
-            console.warn("????????");
+            // console.warn(rootStore?.address, rootStore?.portOut);
+            // console.warn("????????");
         osc.createClient(rootStore?.address, +rootStore?.portOut);
         }
     }, []);
@@ -51,7 +50,6 @@ const Index = () => {
             setSourceTxt(data?.source);
 
             osc.sendMessage("/chatbox/input", [`${data?.target}(${data?.source})`, true, true]);
-            osc.sendMessage("/input/Jump", [1]);
             setIsLoading(false);
         }
     };

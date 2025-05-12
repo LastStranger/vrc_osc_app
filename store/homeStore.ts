@@ -1,7 +1,6 @@
 import { DataT } from "@/store/types";
 import { autorun, IReactionDisposer, makeAutoObservable, runInAction } from "mobx";
-// @ts-ignore
-import osc from "react-native-osc";
+import osc from "react-native-vrc-osc";
 import RootStore from "@/store/rootStore";
 import { Alert } from "react-native";
 import { storage } from "@/store/mmkv";
@@ -37,7 +36,7 @@ class HomeStore {
     }
 
     // 重新设置客osc的IP地址和端口号
-    resetOscClient = (address?: string, portOut?: number) => {
+    resetOscClient = (address: string, portOut: number) => {
         osc.createClient(address, portOut);
     }
 
