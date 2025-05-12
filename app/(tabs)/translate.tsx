@@ -16,12 +16,17 @@ const Index = () => {
     const [isLoading, setIsLoading] = useState(false);
     const recordingRef = useRef<any>(null);
 
+
     useEffect(() => {
         // const portOut = 9000;
         // const address = "192.168.31.180";
         // osc.createClient(address, portOut);
-        osc.createClient(rootStore?.address, rootStore?.portOut);
-    }, [rootStore?.address, rootStore?.portOut]);
+        if(rootStore?.address && rootStore?.portOut){
+            console.warn(rootStore?.address, rootStore?.portOut);
+            console.warn("????????");
+        osc.createClient(rootStore?.address, +rootStore?.portOut);
+        }
+    }, []);
     const handlePressIn = async () => {
         // 触发触觉反馈
         if (Platform.OS === "ios") {
@@ -46,6 +51,7 @@ const Index = () => {
             setSourceTxt(data?.source);
 
             osc.sendMessage("/chatbox/input", [`${data?.target}(${data?.source})`, true, true]);
+            osc.sendMessage("/input/Jump", [1]);
             setIsLoading(false);
         }
     };

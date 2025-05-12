@@ -6,7 +6,7 @@ import { DataT } from "@/store/types";
 
 export class RootStore {
     address?: string = storage.getString("address") ?? "192.168.0.1"; // vrc的IP地址
-    portOut?: string = storage.getString("portOut") ?? "9000"; // vrc的端口号
+    portOut?: number = storage.getNumber("portOut") ?? 9000; // vrc的端口号
     avatarInfo?: DataT[] = [];
     avatarInputString?: string = undefined;
     constructor() {
@@ -30,7 +30,7 @@ export class RootStore {
         storage.set("address", address);
     }
 
-    setPortOut = (portOut: string) => {
+    setPortOut = (portOut: number) => {
         this.portOut = portOut;
         storage.set("portOut", portOut);
     }

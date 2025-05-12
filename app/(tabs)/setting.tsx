@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useContext } from "react";
-import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { StoreContext } from "@/app/_layout";
 
 const Setting = () => {
@@ -14,7 +14,16 @@ const Setting = () => {
 
     // 处理端口输入变化
     const handlePortChange = useCallback((text: string) => {
-        store?.setPortOut(text);
+        const portNumber = parseInt(text);
+        if (!isNaN(portNumber) && portNumber > 0 && portNumber <= 65535) {
+            store?.setPortOut(portNumber);
+        }else {
+            Alert.alert(
+                "输入错误",
+                "请输入有效的数字",
+                [{ text: "确定" }]
+            );
+        }
     }, [store]);
 
     // 处理 Avatar JSON 数据的输入变化
@@ -52,7 +61,8 @@ const Setting = () => {
                     <TextInput
                         className="text-[16px] m-0 p-0 text-[#4c4c4c] flex-1"
                         placeholder="必填, 1-65535"
-                        value={store?.portOut}
+                        value={store?.portOut?.toString()}
+                        keyboardType="number-pad"
                         onChangeText={handlePortChange}
                     />
                 </View>

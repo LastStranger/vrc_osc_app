@@ -37,7 +37,7 @@ class HomeStore {
     }
 
     // 重新设置客osc的IP地址和端口号
-    resetOscClient = (address?: string, portOut?: string) => {
+    resetOscClient = (address?: string, portOut?: number) => {
         osc.createClient(address, portOut);
     }
 
