@@ -8,28 +8,33 @@ const Setting = () => {
     //todo保存配置,笔记在notion上
 
     // 处理地址输入变化
-    const handleAddressChange = useCallback((text: string) => {
-        store?.setAddress(text);
-    }, [store]);
+    const handleAddressChange = useCallback(
+        (text: string) => {
+            store?.setAddress(text);
+        },
+        [store],
+    );
 
     // 处理端口输入变化
-    const handlePortChange = useCallback((text: string) => {
-        const portNumber = parseInt(text);
-        if (!isNaN(portNumber) && portNumber > 0 && portNumber <= 65535) {
-            store?.setPortOut(portNumber);
-        }else {
-            Alert.alert(
-                "输入错误",
-                "请输入有效的数字",
-                [{ text: "确定" }]
-            );
-        }
-    }, [store]);
+    const handlePortChange = useCallback(
+        (text: string) => {
+            const portNumber = parseInt(text);
+            if (!isNaN(portNumber) && portNumber > 0 && portNumber <= 65535) {
+                store?.setPortOut(portNumber);
+            } else {
+                Alert.alert("输入错误", "请输入有效的数字", [{ text: "确定" }]);
+            }
+        },
+        [store],
+    );
 
     // 处理 Avatar JSON 数据的输入变化
-    const handleAvatarJson = useCallback((text: string) => {
-        store?.setAvatarJson(text);
-    }, [store]);
+    const handleAvatarJson = useCallback(
+        (text: string) => {
+            store?.setAvatarJson(text);
+        },
+        [store],
+    );
 
     // 加载示例 Avatar 1
     const handleDemoAvatar = useCallback(() => {
@@ -80,22 +85,12 @@ const Setting = () => {
             </View>
             {/* 示例按钮区域 */}
             <View className="flex-row justify-between mt-6 mx-4">
-                <TouchableOpacity
-                    className="bg-[#80C7FF] px-6 py-3 rounded-full w-[45%]"
-                    onPress={handleDemoAvatar}
-                >
-                    <Text className="text-white text-center text-[16px] font-medium">
-                        demo Avatar1
-                    </Text>
+                <TouchableOpacity className="bg-[#80C7FF] px-6 py-3 rounded-full w-[45%]" onPress={handleDemoAvatar}>
+                    <Text className="text-white text-center text-[16px] font-medium">demo Avatar1</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                    className="bg-[#A3C8FF] px-6 py-3 rounded-full w-[45%]"
-                    onPress={handleDemo2Avatar}
-                >
-                    <Text className="text-white text-center text-[16px] font-medium">
-                        demo Avatar2
-                    </Text>
+                <TouchableOpacity className="bg-[#A3C8FF] px-6 py-3 rounded-full w-[45%]" onPress={handleDemo2Avatar}>
+                    <Text className="text-white text-center text-[16px] font-medium">demo Avatar2</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
