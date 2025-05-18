@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import * as Linking from 'expo-linking';
+import decodeBase64 from "@/utils/decodeBase64";
 
 
 const Index = () => {
@@ -26,8 +27,9 @@ const Index = () => {
             console.warn(path, "path");
             console.warn(queryParams, "queryParams");
 
-            if (path === 'temp') {
-                console.warn("hahahaha");
+            if ( queryParams?.message) {
+                const decodedMessage = decodeBase64(queryParams?.message as string);
+                console.warn("解码后的消息:", decodedMessage);
             }
         };
 
