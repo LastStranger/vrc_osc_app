@@ -17,12 +17,13 @@ import { Props } from "@/components/Home/OperateItem/types";
 import { HomeContext } from "@/app/(tabs)";
 import { observer } from "mobx-react-lite";
 import { DataT } from "@/store/types";
+import FloatItem from "@/components/Home/OperateItem/FloatItem";
 
 const Index: React.FC<Props> = ({ item, index, ...props }) => {
     const translateX = useSharedValue(0);
     const startX = useSharedValue(0);
     const { store } = useContext(HomeContext);
-    const { changeStatus, deleteOscItem, changeItemSlideStatus, handleTrigger } = store;
+    const { changeStatus, deleteOscItem, changeItemSlideStatus } = store;
 
     // useEffect(() => {
     //     console.warn("initial renderinitial renderinitial renderinitial renderinitial render");
@@ -51,11 +52,11 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
         }
     }, [item.slideStatus]);
 
-    useEffect(() => {
-        if (item.status) {
-            handleTrigger(index);
-        }
-    }, [item.status, index, handleTrigger]);
+    // useEffect(() => {
+    //     if (item.status) {
+    //         handleTrigger(index);
+    //     }
+    // }, [item.status, index, handleTrigger]);
 
     // 滑动手势
     const panGesture = useMemo(
@@ -114,13 +115,9 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
 
     // console.warn("item render");
 
-    return (
-        <GestureDetector gesture={panGesture}>
-            <Animated.View
-                layout={LinearTransition.springify().damping(14)}
-                entering={FadeInDown.springify().damping(14)}
-                exiting={FadeOut.springify().damping(14)}
-            >
+    const renderItem = useMemo(() => {
+        if (item.input?.type === "Bool") {
+            return (
                 <Animated.View
                     className="flex-row"
                     style={[
@@ -143,9 +140,7 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                             className={`flex-1 my-2 mx-3 p-2 rounded-lg ${item.status ? "bg-[#80C7FF]" : "bg-[#F5F8FF]"} flex-row items-center justify-between`}
                             // onPress={handlePress}
                         >
-                            <Text className={getTextColorClass(item)}>
-                                {item.name}
-                            </Text>
+                            <Text className={getTextColorClass(item)}>{item.name}</Text>
                             <Switch
                                 // onChange={() => props.onOperate(item)}
                                 onChange={() => handleSwitchStatus(index)}
@@ -164,6 +159,21 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                         <Text className="text-white text-base">删除</Text>
                     </TouchableOpacity>
                 </Animated.View>
+            );
+        }
+        if(item.input?.type === "Float"){
+            return <FloatItem item={item} index={index} />;
+        }
+    }, [item.input?.type, index, handleDelete, item.status, handleSwitchStatus]);
+
+    return (
+        <GestureDetector gesture={panGesture}>
+            <Animated.View
+                layout={LinearTransition.springify().damping(14)}
+                entering={FadeInDown.springify().damping(14)}
+                exiting={FadeOut.springify().damping(14)}
+            >
+                {renderItem}
             </Animated.View>
         </GestureDetector>
     );

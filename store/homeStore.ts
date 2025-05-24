@@ -100,12 +100,14 @@ class HomeStore {
         }
     };
 
-    handleTrigger = (index: number) => {
-        // if (this.oscArr[index]?.input?.type === "Bool") {
-        //     const params = this.oscArr[index]?.input?.address;
-        //     osc.sendMessage(params, [true]);
-        // }
-    }
+    // handleTrigger = (index: number) => {
+    //     // if (this.oscArr[index]?.input?.type === "Bool") {
+    //     //     const params = this.oscArr[index]?.input?.address;
+    //     //     osc.sendMessage(params, [true]);
+    //     // }
+    // }
+
+
 
     // 清理方法
     dispose = () => {
