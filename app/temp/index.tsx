@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { View, Text } from "react-native";
 import * as Linking from 'expo-linking';
 import decodeBase64 from "@/utils/decodeBase64";
+import osc from "react-native-vrc-osc";
 
 
 const Index = () => {
@@ -12,6 +13,7 @@ const Index = () => {
 
         // 处理初始链接
         const getInitialURL = async () => {
+            console.warn(1111);
             const initialUrl = await Linking.getInitialURL();
             if (initialUrl) {
                 console.warn(initialUrl, "initialUrl");
@@ -30,6 +32,19 @@ const Index = () => {
             if ( queryParams?.message) {
                 const decodedMessage = decodeBase64(queryParams?.message as string);
                 console.warn("解码后的消息:", decodedMessage);
+                // if(decodedMessage.includes("不吃牛") || decodedMessage.includes("no steak")){
+                //     osc.sendMessage("/avatar/parameters/steak", [true]);
+                //     return;
+                // }
+                const steakRegex = /(?:不吃牛|no\s*steak|close\s*steak)/i;
+                if (steakRegex.test(decodedMessage)) {
+                    osc.sendMessage("/avatar/parameters/steak", [false]);
+                    return;
+                }
+
+                if(decodedMessage.includes("牛排") || decodedMessage.includes("steak")){
+                    osc.sendMessage("/avatar/parameters/steak", [true]);
+                }
             }
         };
 
