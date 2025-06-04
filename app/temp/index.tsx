@@ -29,6 +29,19 @@ const Index = () => {
             console.warn(path, "path");
             console.warn(queryParams, "queryParams");
 
+            if(queryParams?.isClear){
+                if(queryParams?.message === "openGun"){
+                    osc.sendMessage("/avatar/parameters/Tri_PunisherZenith_Weapon_off", [false]);
+                    osc.sendMessage("/avatar/parameters/Tri_PunisherZenith_grab_on", [true]);
+                    return;
+                }
+                if(queryParams?.message === "closeGun"){
+                    osc.sendMessage("/avatar/parameters/Tri_PunisherZenith_Weapon_off", [true]);
+                    osc.sendMessage("/avatar/parameters/Tri_PunisherZenith_grab_on", [false]);
+                    return;
+                }
+            }
+
             if ( queryParams?.message) {
                 const decodedMessage = decodeBase64(queryParams?.message as string);
                 console.warn("解码后的消息:", decodedMessage);
@@ -36,6 +49,7 @@ const Index = () => {
                 //     osc.sendMessage("/avatar/parameters/steak", [true]);
                 //     return;
                 // }
+
                 const steakRegex = /(?:不吃牛|no\s*steak|close\s*steak)/i;
                 if (steakRegex.test(decodedMessage)) {
                     osc.sendMessage("/avatar/parameters/steak", [false]);
@@ -65,3 +79,7 @@ const Index = () => {
 };
 
 export default Index;
+
+type Props = "hhh" | "sss" | string;
+
+const d: Props = "a";
