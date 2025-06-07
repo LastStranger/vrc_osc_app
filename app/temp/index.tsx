@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 import * as Linking from 'expo-linking';
 import decodeBase64 from "@/utils/decodeBase64";
 import osc from "react-native-vrc-osc";
+import { observer } from "mobx-react-lite";
 
 
 const Index = () => {
@@ -42,6 +43,13 @@ const Index = () => {
                 }
             }
 
+            if(queryParams?.istranslate){
+                const decodedMessage = decodeBase64(queryParams?.message as string);
+                console.warn("解码后的消息:", decodedMessage);
+                osc.sendMessage("/chatbox/input", [`${decodedMessage}`, true, true]);
+                return;
+            }
+
             if ( queryParams?.message) {
                 const decodedMessage = decodeBase64(queryParams?.message as string);
                 console.warn("解码后的消息:", decodedMessage);
@@ -79,7 +87,3 @@ const Index = () => {
 };
 
 export default Index;
-
-type Props = "hhh" | "sss" | string;
-
-const d: Props = "a";

@@ -3,6 +3,7 @@ import { storage } from "@/store/mmkv";
 import oscDataDemo1 from "@/app/(tabs)/data.json";
 import oscDataDemo2 from "@/app/(tabs)/dataBlue.json";
 import { DataT } from "@/store/types";
+import osc from "react-native-vrc-osc";
 
 export class RootStore {
     address: string = storage.getString("address") ?? "192.168.0.1"; // vrc的IP地址
@@ -13,6 +14,7 @@ export class RootStore {
         makeAutoObservable(this, {}, {
             autoBind: true // 自动绑定方法
         });
+        osc.createClient(this.address, this.portOut);
         this.initAvatarInfo();
     }
 
