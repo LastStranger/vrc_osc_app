@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import * as Linking from 'expo-linking';
 import decodeBase64 from "@/utils/decodeBase64";
@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 
 
 const Index = () => {
+    const [commandString, setCommandString] = useState("");
 
 
     useEffect(() => {
@@ -34,11 +35,13 @@ const Index = () => {
                 if(queryParams?.message === "openGun"){
                     osc.sendMessage("/avatar/parameters/Tri_PunisherZenith_Weapon_off", [false]);
                     osc.sendMessage("/avatar/parameters/Tri_PunisherZenith_grab_on", [true]);
+                    setCommandString("打开散弹枪");
                     return;
                 }
                 if(queryParams?.message === "closeGun"){
                     osc.sendMessage("/avatar/parameters/Tri_PunisherZenith_Weapon_off", [true]);
                     osc.sendMessage("/avatar/parameters/Tri_PunisherZenith_grab_on", [false]);
+                    setCommandString("关闭散弹枪");
                     return;
                 }
             }
@@ -47,11 +50,13 @@ const Index = () => {
                 const decodedMessage = decodeBase64(queryParams?.message as string);
                 console.warn("解码后的消息:", decodedMessage);
                 osc.sendMessage("/chatbox/input", [`${decodedMessage}`, true, true]);
+                setCommandString(decodedMessage);
                 return;
             }
 
             if ( queryParams?.message) {
-                const decodedMessage = decodeBase64(queryParams?.message as string);
+                // const decodedMessage = decodeBase64(queryParams?.message as string);
+                const decodedMessage = queryParams?.message as string;
                 console.warn("解码后的消息:", decodedMessage);
                 // if(decodedMessage.includes("不吃牛") || decodedMessage.includes("no steak")){
                 //     osc.sendMessage("/avatar/parameters/steak", [true]);
@@ -61,11 +66,13 @@ const Index = () => {
                 const steakRegex = /(?:不吃牛|no\s*steak|close\s*steak)/i;
                 if (steakRegex.test(decodedMessage)) {
                     osc.sendMessage("/avatar/parameters/steak", [false]);
+                    setCommandString("关闭牛排");
                     return;
                 }
 
                 if(decodedMessage.includes("牛排") || decodedMessage.includes("steak")){
                     osc.sendMessage("/avatar/parameters/steak", [true]);
+                    setCommandString("打开牛排");
                 }
             }
         };
@@ -80,8 +87,8 @@ const Index = () => {
 
 
     return (
-        <View>
-            <Text>333</Text>
+        <View className="flex-1 items-center justify-center">
+            <Text className="text-4xl">{commandString}</Text>
         </View>
     );
 };
