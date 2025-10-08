@@ -3,7 +3,6 @@ import { View, Text } from "react-native";
 import * as Linking from 'expo-linking';
 import decodeBase64 from "@/utils/decodeBase64";
 import osc from "react-native-vrc-osc";
-import { observer } from "mobx-react-lite";
 
 
 const Index = () => {
