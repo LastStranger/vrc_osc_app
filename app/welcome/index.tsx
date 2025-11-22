@@ -47,7 +47,11 @@ const Index = () => {
         // 放到UI线程中,防止热更新导致动画没重新热更新
         runOnUI(() => {
             cancelAnimation(angle);
-            angle.value = withRepeat(withTiming(360, { duration: 2000, easing: Easing.linear }), -1, false);
+            angle.value = withRepeat(
+                withTiming(Math.PI * 2, { duration: 2000, easing: Easing.linear }),
+                -1,
+                false
+            );
         })();
 
         return () => {
@@ -56,7 +60,7 @@ const Index = () => {
     }, []);
 
     // 绑定 Reanimated 的动画值到 Skia
-    const aTransform = useDerivedValue(() => [{ rotate: (angle.value * Math.PI) / 180 }]);
+    const aTransform = useDerivedValue(() => [{ rotate: angle.value }]);
 
     useAnimatedReaction(
         () => {
