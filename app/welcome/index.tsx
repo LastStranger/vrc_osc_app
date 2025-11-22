@@ -4,20 +4,21 @@ import { Marquee } from "@animatereactnative/marquee";
 import { Image } from "expo-image";
 import { cssInterop } from "nativewind";
 import Animated, {
+    cancelAnimation,
     Easing,
     FadeIn,
     FadeOut,
-    runOnJS,
+    runOnJS, runOnUI,
     useAnimatedReaction,
     useDerivedValue,
     useSharedValue,
     withRepeat,
-    withTiming,
+    withTiming
 } from "react-native-reanimated";
 import { Stagger } from "@animatereactnative/stagger";
 import { useNavigation } from "expo-router";
 
-import { Canvas, Rect, SweepGradient, vec, Skia } from "@shopify/react-native-skia";
+import { Canvas, Rect, SweepGradient, vec, Skia, BlurMask, RoundedRect } from "@shopify/react-native-skia";
 
 cssInterop(Image, { className: "style" });
 
@@ -43,7 +44,15 @@ const Index = () => {
     const angle = useSharedValue(0);
 
     useEffect(() => {
-        angle.value = withRepeat(withTiming(360, { duration: 2000, easing: Easing.linear }), -1);
+        // 放到UI线程中,防止热更新导致动画没重新热更新
+        runOnUI(() => {
+            cancelAnimation(angle);
+            angle.value = withRepeat(withTiming(360, { duration: 2000, easing: Easing.linear }), -1, false);
+        })();
+
+        return () => {
+            cancelAnimation(angle);
+        };
     }, []);
 
     // 绑定 Reanimated 的动画值到 Skia
@@ -97,6 +106,8 @@ const Index = () => {
                     renderItem={renderItems}
                 />
             </Marquee>
+
+            {/*让底部部分依次上浮动画*/}
             <Stagger
                 initialEnteringDelay={1000}
                 duration={500}
@@ -106,15 +117,25 @@ const Index = () => {
                 <View style={styles.container}>
                     <Canvas style={styles.canvas}>
                         {/* 画渐变边框 */}
-                        <Rect x={0} y={0} width={160} height={160}>
+                        <RoundedRect
+                            x={20}
+                            y={20}
+                            width={160}
+                            height={60}
+                            r={30}  // 圆角半径，可根据需求调整
+                            // color="lightblue"
+                        >
+                        {/*<Rect x={20} y={20} width={160} height={60} blendMode={"darken"}>*/}
                             <SweepGradient
-                                c={vec(80, 40)}
-                                origin={{ x: 80, y: 40 }}
+                                c={vec(100, 50)}
+                                origin={{ x: 100, y: 50 }}
                                 colors={["#ff4545", "#00ff99", "#006aff", "#ff0095", "#ff4545"]}
                                 // positions={[0, 0.25, 0.5, 0.75, 1]}
                                 transform={aTransform}
                             />
-                        </Rect>
+                            <BlurMask blur={8} style={"solid"} />
+                        {/*</Rect>*/}
+                        </RoundedRect>
                     </Canvas>
 
                     <Pressable style={styles.button} onPress={handleGoToHome}>
@@ -132,12 +153,14 @@ const styles = StyleSheet.create({
     container: {
         alignItems: "center",
         justifyContent: "center",
-        flex: 1,
-        backgroundColor: "#0b0d15",
+        // flex: 1,
+        width: 200,
+        height: 200,
+        // backgroundColor: "red",
     },
-    canvas: {
-        width: 160,
-        height: 60,
+     canvas: {
+        width: 200,
+        height: 200,
         position: "absolute",
         borderRadius: 30,
         overflow: "hidden",
@@ -150,6 +173,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 25,
         position: "absolute",
+        top: 25,
     },
     text: {
         color: "white",
