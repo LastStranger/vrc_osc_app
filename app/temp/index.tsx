@@ -11,7 +11,7 @@ const Index = () => {
 
     useEffect(() => {
 
-        // 处理初始链接
+        // 开始处理初始链接
         const getInitialURL = async () => {
             console.warn(1111);
             const initialUrl = await Linking.getInitialURL();
