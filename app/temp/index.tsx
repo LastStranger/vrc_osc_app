@@ -10,7 +10,6 @@ const Index = () => {
 
 
     useEffect(() => {
-        console.log("useEffect");
 
         // 处理初始链接
         const getInitialURL = async () => {
