@@ -157,10 +157,8 @@ const styles = StyleSheet.create({
     container: {
         alignItems: "center",
         justifyContent: "center",
-        // flex: 1,
         width: 200,
         height: 200,
-        // backgroundColor: "red",
     },
      canvas: {
         width: 200,
