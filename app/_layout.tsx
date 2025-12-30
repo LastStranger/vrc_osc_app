@@ -49,4 +49,3 @@ export default function RootLayout() {
         </StoreContext.Provider>
     );
 }
-1
