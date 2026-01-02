@@ -1,5 +1,5 @@
-import { Audio } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
+import { Audio } from "expo-av";
+import * as FileSystem from "expo-file-system";
 
 // 初始化录音对象
 // let recording = new Audio.Recording();
@@ -13,13 +13,11 @@ export const startRecording = async () => {
         playsInSilentModeIOS: true,
     });
     try {
-        await recording.prepareToRecordAsync(
-            Audio.RecordingOptionsPresets.HIGH_QUALITY
-        );
+        await recording.prepareToRecordAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
         await recording.startAsync();
         return recording;
     } catch (error) {
-        console.error('录音失败:', error);
+        console.error("录音失败:", error);
     }
 };
 
@@ -29,11 +27,10 @@ export const stopRecording = async (recording: Audio.Recording) => {
         await recording.stopAndUnloadAsync();
         const uri = recording.getURI();
         // 读取音频文件为Base64格式（腾讯云ASR需要）
-        const audioBase64 = await FileSystem.readAsStringAsync(uri ?? "", {
+        return await FileSystem.readAsStringAsync(uri ?? "", {
             encoding: FileSystem.EncodingType.Base64,
         });
-        return audioBase64;
     } catch (error) {
-        console.error('停止录音失败:', error);
+        console.error("停止录音失败:", error);
     }
 };
