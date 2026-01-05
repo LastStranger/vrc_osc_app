@@ -25,6 +25,7 @@ const Index = () => {
             osc.createClient(rootStore?.address, +rootStore?.portOut);
         }
     }, []);
+
     const handlePressIn = async () => {
         // 按下时触发触觉反馈 (iOS Only)
         if (Platform.OS === "ios") {
