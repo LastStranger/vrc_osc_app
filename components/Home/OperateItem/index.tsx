@@ -1,49 +1,26 @@
 import React, { useCallback, useContext, useEffect, useMemo } from "react";
-import { Pressable, Switch, Text, TouchableOpacity, View } from "react-native";
+import { Switch, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
-    CurvedTransition,
-    FadeIn,
     FadeInDown,
     FadeOut,
-    LayoutAnimationConfig,
     LinearTransition,
-    runOnJS,
     useAnimatedStyle,
     useSharedValue,
     withTiming,
 } from "react-native-reanimated";
-import { Gesture, GestureDetector, TapGestureHandler } from "react-native-gesture-handler";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Props } from "@/components/Home/OperateItem/types";
 import { HomeContext } from "@/app/(tabs)";
 import { observer } from "mobx-react-lite";
 import { DataT } from "@/store/types";
 import FloatItem from "@/components/Home/OperateItem/FloatItem";
+import { scheduleOnRN } from "react-native-worklets";
 
-const Index: React.FC<Props> = ({ item, index, ...props }) => {
+const Index: React.FC<Props> = ({ item, index }) => {
     const translateX = useSharedValue(0);
     const startX = useSharedValue(0);
     const { store } = useContext(HomeContext);
     const { changeStatus, deleteOscItem, changeItemSlideStatus } = store;
-
-    // useEffect(() => {
-    //     console.warn("initial renderinitial renderinitial renderinitial renderinitial render");
-    // }, []);
-    //
-    // useEffect(() => {
-    //     console.warn("changeStatus:", index);
-    // }, [changeStatus]);
-    //
-    // useEffect(() => {
-    //     console.warn("deleteOscItem:");
-    // }, [deleteOscItem]);
-    //
-    // useEffect(() => {
-    //     console.warn("changeItemSlideStatus:");
-    // }, [changeItemSlideStatus]);
-    //
-    // useEffect(() => {
-    //     console.warn("handleTrigger:");
-    // }, [handleTrigger]);
 
     // 如果item的滑动状态变为false，则将translateX设置为0
     useEffect(() => {
@@ -52,12 +29,6 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
         }
     }, [item.slideStatus]);
 
-    // useEffect(() => {
-    //     if (item.status) {
-    //         handleTrigger(index);
-    //     }
-    // }, [item.status, index, handleTrigger]);
-
     // 滑动手势
     const panGesture = useMemo(
         () =>
@@ -65,7 +36,7 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                 .activeOffsetX([-10, 10])
                 .onStart(() => {
                     startX.value = translateX.value;
-                    runOnJS(changeItemSlideStatus)(index ?? 0, false);
+                    scheduleOnRN(changeItemSlideStatus, index ?? 0, false);
                 })
                 .onUpdate(event => {
                     const newTranslateX = startX.value + event.translationX;
@@ -73,7 +44,7 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                 })
                 .onEnd(event => {
                     translateX.value = withTiming(event.translationX < -50 ? -100 : 0);
-                    runOnJS(changeItemSlideStatus)(index, true);
+                    scheduleOnRN(changeItemSlideStatus, index, true);
                 }),
         [index, changeItemSlideStatus],
     );
@@ -83,9 +54,16 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
     }));
 
     // 点击回归item初始状态
-    const handlePress = useCallback(() => {
-        translateX.value = withTiming(0);
-    }, []);
+    const tapGesture = useMemo(
+        () =>
+            Gesture.Tap()
+                .maxDeltaX(10)
+                .maxDeltaY(10)
+                .onEnd(() => {
+                    translateX.value = withTiming(0);
+                }),
+        [],
+    );
 
     // 切换状态
     const handleSwitchStatus = useCallback(
@@ -113,7 +91,6 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
         return `${baseStyle} ${item.status ? "text-white" : "text-black"}`;
     };
 
-    // console.warn("item render");
 
     const renderItem = useMemo(() => {
         if (item.input?.type === "Bool") {
@@ -131,14 +108,9 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                         rStyle,
                     ]}
                 >
-                    <TapGestureHandler
-                        maxDeltaX={10} // 最大允许的水平滑动距离（像素）
-                        maxDeltaY={10} // 最大允许的垂直滑动距离（像素）
-                        onActivated={handlePress} // 点击事件回调
-                    >
+                    <GestureDetector gesture={tapGesture}>
                         <View
                             className={`flex-1 my-2 mx-3 p-2 rounded-lg ${item.status ? "bg-[#80C7FF]" : "bg-[#F5F8FF]"} flex-row items-center justify-between`}
-                            // onPress={handlePress}
                         >
                             <Text className={getTextColorClass(item)}>{item.name}</Text>
                             <Switch
@@ -147,31 +119,31 @@ const Index: React.FC<Props> = ({ item, index, ...props }) => {
                                 trackColor={{ false: "#D1E6FF", true: "#80C7FF" }}
                                 thumbColor={item.status ? "#FFFFFF" : "#B0C4DE"}
                                 // color="#80C7FF"
-                                ios_backgroundColor="#D1E6FF"
+                                // ios_backgroundColor="#D1E6FF"
                                 value={item.status}
                             />
                         </View>
-                    </TapGestureHandler>
+                    </GestureDetector>
                     <TouchableOpacity
                         className="bg-[#FF6B6B] rounded justify-center items-center w-20 absolute -right-[80] top-0 bottom-0 my-2"
-                        onPress={() => runOnJS(handleDelete)()}
+                        onPress={() => scheduleOnRN(handleDelete)}
                     >
                         <Text className="text-white text-base">删除</Text>
                     </TouchableOpacity>
                 </Animated.View>
             );
         }
-        if(item.input?.type === "Float"){
+        if (item.input?.type === "Float") {
             return <FloatItem item={item} index={index} />;
         }
-    }, [item.input?.type, index, handleDelete, item.status, handleSwitchStatus]);
+    }, [item.input?.type, index, handleDelete, item.status, handleSwitchStatus, tapGesture]);
 
     return (
         <GestureDetector gesture={panGesture}>
             <Animated.View
-                layout={LinearTransition.springify().damping(14)}
-                entering={FadeInDown.springify().damping(14)}
-                exiting={FadeOut.springify().damping(14)}
+                layout={LinearTransition.springify(300).damping(14)}
+                entering={FadeInDown.springify(300).damping(14)}
+                exiting={FadeOut.springify(300).damping(14)}
             >
                 {renderItem}
             </Animated.View>

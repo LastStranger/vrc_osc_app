@@ -8,17 +8,17 @@ import Animated, {
     Easing,
     FadeIn,
     FadeOut,
-    runOnJS, runOnUI,
     useAnimatedReaction,
     useDerivedValue,
     useSharedValue,
     withRepeat,
     withTiming
 } from "react-native-reanimated";
+import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 import { Stagger } from "@animatereactnative/stagger";
 import { useNavigation } from "expo-router";
 
-import { Canvas, Rect, SweepGradient, vec, Skia, BlurMask, RoundedRect } from "@shopify/react-native-skia";
+import { Canvas, SweepGradient, vec, BlurMask, RoundedRect } from "@shopify/react-native-skia";
 
 cssInterop(Image, { className: "style" });
 
@@ -45,14 +45,14 @@ const Index = () => {
 
     useEffect(() => {
         // 放到UI线程中,防止热更新导致动画没重新热更新
-        runOnUI(() => {
+        scheduleOnUI(() => {
             cancelAnimation(angle);
             angle.value = withRepeat(
                 withTiming(Math.PI * 2, { duration: 2000, easing: Easing.linear }),
                 -1,
                 false
             );
-        })();
+        });
 
         return () => {
             cancelAnimation(angle);
@@ -68,7 +68,7 @@ const Index = () => {
             return Math.abs(Math.floor(floatIndex));
         },
         value => {
-            runOnJS(setActIndex)(value);
+            scheduleOnRN(setActIndex, value);
         },
     );
 
@@ -127,9 +127,9 @@ const Index = () => {
                             width={160}
                             height={60}
                             r={30}  // 圆角半径，可根据需求调整
-                            // color="lightblue"
+                        // color="lightblue"
                         >
-                        {/*<Rect x={20} y={20} width={160} height={60} blendMode={"darken"}>*/}
+                            {/*<Rect x={20} y={20} width={160} height={60} blendMode={"darken"}>*/}
                             <SweepGradient
                                 c={vec(100, 50)}
                                 origin={{ x: 100, y: 50 }}
@@ -138,7 +138,7 @@ const Index = () => {
                                 transform={aTransform}
                             />
                             <BlurMask blur={8} style={"solid"} />
-                        {/*</Rect>*/}
+                            {/*</Rect>*/}
                         </RoundedRect>
                     </Canvas>
 
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
     },
-     canvas: {
+    canvas: {
         width: 200,
         height: 200,
         position: "absolute",

@@ -3,7 +3,7 @@ import { Text, View, FlatList } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
 import { DataT, HomeContextT } from "@/store/types";
-import { Gesture, GestureDetector, GestureHandlerRootView, PanGestureHandler } from "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import OperateItem from "@/components/Home/OperateItem";
 import HomeStore from "@/store/homeStore";
 import { observer } from "mobx-react-lite";

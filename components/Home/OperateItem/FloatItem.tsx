@@ -1,37 +1,52 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { Alert, Text, View } from "react-native";
-import Animated, { runOnJS, useAnimatedStyle, useDerivedValue, useSharedValue } from "react-native-reanimated";
-import { Gesture, GestureDetector, LongPressGestureHandler } from "react-native-gesture-handler";
+import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Props } from "@/components/Home/OperateItem/types";
 import { observer } from "mobx-react-lite";
 import { HomeContext } from "@/app/(tabs)";
 import osc from "react-native-vrc-osc";
-import * as Haptics from 'expo-haptics'; // 导入 expo-haptics
+import * as Haptics from "expo-haptics"; // 导入 expo-haptics
+import { scheduleOnRN } from "react-native-worklets";
+import { DataT } from "@/store/types";
 
-
-const FloatItem: React.FC<Props> = ({ item, index }) => {
+const Index = ({ item, index }: Props) => {
     const { store } = useContext(HomeContext);
     const progress = useSharedValue(0);
     const offsetX = useSharedValue(0);
     const [progressDisplay, setProgressDisplay] = useState(0);
 
+    const handleLongPress = useCallback(
+        async () => {
+            try {
+                // 重度振动反馈，提升长按感知
+                await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+            } catch (error) {
+                // haptics 在某些设备/模拟器上可能失败，静默忽略
+                console.warn('Haptics failed:', error);
+            }
 
-    const handleLongPress = async () => {
-        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-        Alert.alert("删除确认", `确定要删除 ${item.name} 吗？`, [
-            {
-                text: "取消",
-                style: "cancel",
-            },
-            {
-                text: "删除",
-                style: "destructive",
-                onPress: () => {
-                    store.deleteOscItem(item.name);
-                },
-            },
-        ]);
-    };
+            Alert.alert(
+                '删除确认',
+                `确定要删除 “${item.name}” 吗？`,
+                [
+                    {
+                        text: '取消',
+                        style: 'cancel',
+                    },
+                    {
+                        text: '删除',
+                        style: 'destructive',
+                        onPress: () => {
+                            store.deleteOscItem(item.name);
+                        },
+                    },
+                ],
+                { cancelable: true } // 允许点击外部或返回键取消（提升 UX）
+            );
+        },
+        [] // 如果 store 是稳定的（如 zustand/mobx 单例），依赖为空
+    );
 
     const sendOscMessage = (addr: string, value: number) => {
         osc.sendMessage(addr, [value]);
@@ -45,7 +60,7 @@ const FloatItem: React.FC<Props> = ({ item, index }) => {
         .onUpdate(event => {
             // 限制滑动范围在0-100之间
             progress.value = Math.max(0, Math.min(100, (event.translationX + offsetX.value) / 2));
-            runOnJS(setProgressDisplay)(progress.value); // 用 runOnJS 同步到 React
+            scheduleOnRN(setProgressDisplay, progress.value);
         })
         .onEnd(() => {
             offsetX.value = progress.value * 2;
@@ -55,9 +70,19 @@ const FloatItem: React.FC<Props> = ({ item, index }) => {
 
             // 发送OSC消息
             if (address) {
-                runOnJS(sendOscMessage)(address, floatValue);
+                scheduleOnRN(sendOscMessage, address, floatValue);
             }
         });
+
+    const longPressGesture = useMemo(
+        () =>
+            Gesture.LongPress()
+                .minDuration(800)
+                .onStart(() => {
+                    scheduleOnRN(handleLongPress);
+                }),
+        [handleLongPress],
+    );
 
     const animatedStyle = useAnimatedStyle(() => {
         const translateX = -(100 - progress.value);
@@ -78,7 +103,7 @@ const FloatItem: React.FC<Props> = ({ item, index }) => {
     });
 
     return (
-        <LongPressGestureHandler minDurationMs={800} onActivated={() => runOnJS(handleLongPress)()}>
+        <GestureDetector gesture={longPressGesture}>
             <Animated.View
                 className="flex-row"
                 style={[
@@ -100,14 +125,16 @@ const FloatItem: React.FC<Props> = ({ item, index }) => {
                         <View className="p-2" style={{ zIndex: 1 }}>
                             <View className="flex-row items-center justify-between">
                                 <Text className="text-3xl flex-1">{item.name}</Text>
-                                <Text style={{ position: 'absolute', top: 10, right: 0 }}>{Math.round(progressDisplay)}%</Text>
+                                <Text style={{ position: "absolute", top: 10, right: 0 }}>
+                                    {Math.round(progressDisplay)}%
+                                </Text>
                             </View>
                         </View>
                     </View>
                 </GestureDetector>
             </Animated.View>
-        </LongPressGestureHandler>
+        </GestureDetector>
     );
 };
 
-export default observer(FloatItem);
+export default observer(Index);
