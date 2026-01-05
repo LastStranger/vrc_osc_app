@@ -6,10 +6,12 @@
 > ✨ 在手机上利用OSC协议，在VRChat游戏内与模型进行各种交互
 
 ## 🌟 当前实现的功能
-- ✅ 手机上操控模型的轮盘上的各种预设
+- ✅ 手机上操控模型的轮盘上的各种预设(目前仅支持boolean类型操作和百分比操作项,其它类型会置灰不可操作)
 - ✅ 手机上语音翻译并显示在chatbox上
-- ✅ 。。。。。。
-- ✅ 。。。。。。
+- ✅ 持久化存储avatar数据
+- ✅ 支持avatar的json字符串导入
+- ✅ 本地IP和端口的修改
+- ......more are coming soon
 
 <img src="https://github.com/user-attachments/assets/8bba8b0c-9341-47d3-922f-3f558e34749e" alt="示例截图" width="200">
 <img src="https://github.com/user-attachments/assets/eb6f1a25-a9c1-418a-8311-29b7ae26b61d" alt="示例截图" width="200">
