@@ -29,7 +29,7 @@ interface SignatureResult {
 }
 
 // 生成腾讯云TC3-HMAC-SHA256签名
-export function generateSignature (params: SignatureParams): SignatureResult {
+export function generateSignature(params: SignatureParams): SignatureResult {
     const { secretId, secretKey, service, action, region, version, payload, endpoint, timestamp = Math.floor(Date.now() / 1000) } = params;
     const date = new Date(timestamp * 1000).toISOString().split("T")[0];
 
@@ -73,7 +73,7 @@ export function generateSignature (params: SignatureParams): SignatureResult {
     return { authorization, timestamp, date };
 }
 
-const tencentTranslate = async (audioBase64: string) => {
+const tencentTranslate = async (audioBase64: string, language?: { source: string, target: string }) => {
     console.log(audioBase64, "audioBase64");
     const endpoint = "tmt.tencentcloudapi.com";
     const service = "tmt";
@@ -82,8 +82,8 @@ const tencentTranslate = async (audioBase64: string) => {
     const version = "2018-03-21";
     const payload = {
         SessionUuid: "test-session-123",
-        Source: "zh",
-        Target: "en",
+        Source: language?.source ?? "zh",
+        Target: language?.target ?? "en",
         AudioFormat: 83886080, //mp3格式
         Seq: 0,
         IsEnd: 1,
