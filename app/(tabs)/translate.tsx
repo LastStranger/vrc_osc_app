@@ -57,7 +57,10 @@ const Index = () => {
             setIsRecording(false); // 更新状态
 
             // 调用翻译接口
-            const data = await tencentTranslate(audioBase64 ?? "", { source: store.sourceLang, target: store.targetLang });
+            const data = await tencentTranslate(audioBase64 ?? "", {
+                source: store.sourceLang,
+                target: store.targetLang,
+            });
             setTranslatedText(data?.target); // 更新显示翻译文本
             setSourceTxt(data?.source); // 更新显示源文本
 
@@ -77,28 +80,32 @@ const Index = () => {
                     </Text>
                     <Text className="text-lg text-gray-800 text-center">sourceTxt: {sourceTxt}</Text>
                 </View>
-                {/*语言切换模块*/}
-                <LanguageSwitch />
-                {/* 加载中指示器 */}
-                {isLoading && <ActivityIndicator size="large" color="#80C7FF" style={{ marginTop: 20 }} />}
-                <Pressable
-                    onPressIn={handlePressIn}
-                    onPressOut={handlePressOut}
-                    className="w-[200] h-[200] bg-red-500 rounded-[50] items-center justify-center shadow-lg active:bg-red-600 mb-3"
-                    style={({ pressed }) => ({
-                        backgroundColor: pressed ? "#F4A8A8" : "#FF6B6B",
-                        transform: [{ scale: pressed ? 0.95 : 1 }],
-                        padding: 20,
-                        borderRadius: 50,
-                        shadowColor: "#000",
-                        shadowOffset: { width: 0, height: 4 },
-                        shadowOpacity: 0.2,
-                        shadowRadius: 6,
-                        elevation: 6, // 为按钮添加阴影效果
-                    })}
-                >
-                    <Text className="text-white text-lg font-medium">{isRecording ? "松开停止录音" : "按住说话"}</Text>
-                </Pressable>
+                <View className="w-full items-center">
+                    {/*语言切换模块*/}
+                    <LanguageSwitch />
+                    {/* 加载中指示器 */}
+                    {isLoading && <ActivityIndicator size="large" color="#80C7FF" style={{ marginTop: 20 }} />}
+                    <Pressable
+                        onPressIn={handlePressIn}
+                        onPressOut={handlePressOut}
+                        className="w-[200] h-[200] bg-red-500 rounded-[50] items-center justify-center shadow-lg active:bg-red-600 mb-3"
+                        style={({ pressed }) => ({
+                            backgroundColor: pressed ? "#F4A8A8" : "#FF6B6B",
+                            transform: [{ scale: pressed ? 0.95 : 1 }],
+                            padding: 20,
+                            borderRadius: 50,
+                            shadowColor: "#000",
+                            shadowOffset: { width: 0, height: 4 },
+                            shadowOpacity: 0.2,
+                            shadowRadius: 6,
+                            elevation: 6, // 为按钮添加阴影效果
+                        })}
+                    >
+                        <Text className="text-white text-lg font-medium">
+                            {isRecording ? "松开停止录音" : "按住说话"}
+                        </Text>
+                    </Pressable>
+                </View>
             </View>
         </TranslateContext.Provider>
     );

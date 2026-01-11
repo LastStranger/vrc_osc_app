@@ -16,9 +16,10 @@ const Index = () => {
     // };
 
     const swapLanguages = useCallback(() => {
+        let tempLang = store.sourceLang;
         store.changeSourceLang(store.targetLang);
-        store.changeTargetLang(store.sourceLang);
-    }, []);
+        store.changeTargetLang(tempLang);
+    }, [store.targetLang, store.sourceLang]);
 
     const handleChangeSourceLang = useCallback((val: string) => {
         store.changeSourceLang(val);
@@ -29,7 +30,7 @@ const Index = () => {
     }, []);
 
     return (
-        <View className="bg-white rounded-[18px] p-4 mx-4 my-3 shadow-sm flex-1 self-stretch">
+        <View className="bg-white rounded-[18px] p-4 mx-4 my-3 shadow-sm justify-end self-stretch">
             <View className="flex-row items-end justify-between z-50">
                 {/* Source Language */}
                 <LanguageDropdown
