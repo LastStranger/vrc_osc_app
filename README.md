@@ -12,9 +12,10 @@
 - ✅ 支持avatar的json字符串导入
 - ✅ 本地IP和端口的修改
 - ......more are coming soon
-
-<img src="https://github.com/user-attachments/assets/8bba8b0c-9341-47d3-922f-3f558e34749e" alt="示例截图" width="200">
-<img src="https://github.com/user-attachments/assets/eb6f1a25-a9c1-418a-8311-29b7ae26b61d" alt="示例截图" width="200">
+<img src="https://github.com/user-attachments/assets/b0c01993-a384-4d25-a96d-82f50a7e8163" alt="示例截图" width="200">
+<img src="https://github.com/user-attachments/assets/86337c16-fda5-4994-af21-305241d96638" alt="示例截图" width="200">
+<img src="https://github.com/user-attachments/assets/7fd87709-997d-4530-8941-381f63a83277" alt="示例截图" width="200">
+<img src="https://github.com/user-attachments/assets/311a6081-14a4-42bb-9a3a-c4b95cf31d38" alt="示例截图" width="200">
 
 ## 📦 安装与使用
 ```sh
