@@ -104,7 +104,6 @@ function HomeScreen() {
         return <OperateItem item={item} index={index} />;
     }, []);
 
-
     return (
         <HomeContext.Provider value={contextValue}>
             <LinearGradient

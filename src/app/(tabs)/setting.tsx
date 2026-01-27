@@ -2,9 +2,11 @@ import { observer } from "mobx-react-lite";
 import React, { useCallback, useContext } from "react";
 import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { StoreContext } from "@/app/_layout";
+import { Sitemap, useNavigation, useRouter } from "expo-router";
 
 const Setting = () => {
     const store = useContext(StoreContext);
+    const router = useRouter();
     //todo保存配置,笔记在notion上
 
     // 处理地址输入变化
@@ -93,6 +95,15 @@ const Setting = () => {
                     <Text className="text-white text-center text-[16px] font-medium">demo Avatar2</Text>
                 </TouchableOpacity>
             </View>
+            <TouchableOpacity
+                className="bg-[#A3C8FF] px-6 py-3 rounded-full w-[45%]"
+                onPress={() => {
+                    router.push("/_justTemp/demo");
+                }}
+            >
+                <Text className="text-white text-center text-[16px] font-medium">demo Avatar2</Text>
+            </TouchableOpacity>
+            {/*{Sitemap()}*/}
         </ScrollView>
     );
 };

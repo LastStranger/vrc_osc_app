@@ -6,9 +6,9 @@ import osc from "react-native-vrc-osc"; // OSC 通信库
 import * as Haptics from "expo-haptics"; // 触觉反馈工具
 import { StoreContext } from "@/app/_layout"; // 全局状态 context
 import { observer } from "mobx-react-lite";
-import LanguageSwitch from "@/components/Translate/LanguageSwitch";
-import TranslateStore from "@/store/translateStore";
-import { TranslateContext } from "@/components/Translate/context";
+import LanguageSwitch from "./components/LanguageSwitch";
+import TranslateStore from "./store";
+import { TranslateContext } from "./context";
 
 const Index = () => {
     const rootStore = useContext(StoreContext); // 获取全局 store

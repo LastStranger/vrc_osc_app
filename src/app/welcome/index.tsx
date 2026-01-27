@@ -12,7 +12,7 @@ import Animated, {
     useDerivedValue,
     useSharedValue,
     withRepeat,
-    withTiming
+    withTiming,
 } from "react-native-reanimated";
 import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 import { Stagger } from "@animatereactnative/stagger";
@@ -47,11 +47,7 @@ const Index = () => {
         // 放到UI线程中,防止热更新导致动画没重新热更新
         scheduleOnUI(() => {
             cancelAnimation(angle);
-            angle.value = withRepeat(
-                withTiming(Math.PI * 2, { duration: 2000, easing: Easing.linear }),
-                -1,
-                false
-            );
+            angle.value = withRepeat(withTiming(Math.PI * 2, { duration: 2000, easing: Easing.linear }), -1, false);
         });
 
         return () => {
@@ -87,8 +83,6 @@ const Index = () => {
             />
         );
     }, []);
-
-    console.log("rendering");
 
     return (
         <View className="flex-1 items-center justify-center bg-black">
@@ -126,8 +120,8 @@ const Index = () => {
                             y={20}
                             width={160}
                             height={60}
-                            r={30}  // 圆角半径，可根据需求调整
-                        // color="lightblue"
+                            r={30} // 圆角半径，可根据需求调整
+                            // color="lightblue"
                         >
                             {/*<Rect x={20} y={20} width={160} height={60} blendMode={"darken"}>*/}
                             <SweepGradient
@@ -181,4 +175,4 @@ const styles = StyleSheet.create({
         color: "white",
         fontSize: 16,
     },
-})
+});

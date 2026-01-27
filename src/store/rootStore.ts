@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable } from "mobx";
 import { storage } from "@/store/mmkv";
 import oscDataDemo1 from "@/app/(tabs)/data.json";
 import oscDataDemo2 from "@/app/(tabs)/dataBlue.json";
@@ -11,9 +11,13 @@ export class RootStore {
     avatarInfo?: DataT[] = [];
     avatarInputString?: string = undefined;
     constructor() {
-        makeAutoObservable(this, {}, {
-            autoBind: true // 自动绑定方法
-        });
+        makeAutoObservable(
+            this,
+            {},
+            {
+                autoBind: true, // 自动绑定方法
+            },
+        );
         osc.createClient(this.address, this.portOut);
         this.initAvatarInfo();
     }
@@ -23,26 +27,25 @@ export class RootStore {
         if (avatarInfo) {
             this.avatarInfo = JSON.parse(avatarInfo);
         }
-    }
-
+    };
 
     // 设置地址和端口的方法
     setAddress = (address: string) => {
         this.address = address;
         storage.set("address", address);
-    }
+    };
 
     setPortOut = (portOut: number) => {
         this.portOut = portOut;
         storage.set("portOut", portOut);
-    }
+    };
 
     setAvatarJson = (avatarJson?: unknown) => {
         try {
             this.avatarInputString = avatarJson as string;
             // 类型守卫
             if (!avatarJson || typeof avatarJson !== "string") {
-                console.warn('无效的 avatarJson 输入');
+                console.warn("无效的 avatarJson 输入");
                 return;
             }
 
@@ -50,7 +53,7 @@ export class RootStore {
             const parsed = JSON.parse(avatarJson);
 
             if (!parsed || !Array.isArray(parsed.parameters)) {
-                console.warn('JSON 格式不正确或缺少 parameters 数组');
+                console.warn("JSON 格式不正确或缺少 parameters 数组");
                 return;
             }
 
@@ -75,21 +78,20 @@ export class RootStore {
             this.avatarInfo = parameters;
             storage.set("avatarInfo", JSON.stringify(parameters));
         } catch (error) {
-            console.error('解析 avatarJson 时出错:', error);
+            console.error("解析 avatarJson 时出错:", error);
             this.avatarInfo = [];
         }
-    }
+    };
 
     setDemo1Avatar = () => {
         this.avatarInfo = oscDataDemo1?.parameters as DataT[];
         this.avatarInputString = JSON.stringify(oscDataDemo1);
-    }
+    };
 
     setDemo2Avatar = () => {
         this.avatarInfo = oscDataDemo2.parameters as DataT[];
         this.avatarInputString = JSON.stringify(oscDataDemo2);
-    }
-
+    };
 }
 
 export default RootStore;

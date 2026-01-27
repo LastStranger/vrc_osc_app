@@ -23,29 +23,29 @@ const Index = ({ item, index }: Props) => {
                 await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
             } catch (error) {
                 // haptics 在某些设备/模拟器上可能失败，静默忽略
-                console.warn('Haptics failed:', error);
+                console.warn("Haptics failed:", error);
             }
 
             Alert.alert(
-                '删除确认',
+                "删除确认",
                 `确定要删除 “${item.name}” 吗？`,
                 [
                     {
-                        text: '取消',
-                        style: 'cancel',
+                        text: "取消",
+                        style: "cancel",
                     },
                     {
-                        text: '删除',
-                        style: 'destructive',
+                        text: "删除",
+                        style: "destructive",
                         onPress: () => {
                             store.deleteOscItem(item.name);
                         },
                     },
                 ],
-                { cancelable: true } // 允许点击外部或返回键取消（提升 UX）
+                { cancelable: true }, // 允许点击外部或返回键取消（提升 UX）
             );
         },
-        [] // 如果 store 是稳定的（如 zustand/mobx 单例），依赖为空
+        [], // 如果 store 是稳定的（如 zustand/mobx 单例），依赖为空
     );
 
     const sendOscMessage = (addr: string, value: number) => {

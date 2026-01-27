@@ -91,7 +91,6 @@ const Index: React.FC<Props> = ({ item, index }) => {
         return `${baseStyle} ${item.status ? "text-white" : "text-black"}`;
     };
 
-
     const renderItem = useMemo(() => {
         if (item.input?.type === "Bool") {
             return (
