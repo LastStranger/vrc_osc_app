@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./assets/icon-1769835372395.png" alt="VRC OSC App Icon" width="150" height="150" style="border-radius: 20%;">
+  <img src="./assets/icon-rounded.png" alt="VRC OSC App Icon" width="150" height="150">
 
   # 🚀 VRC OSC App
 
