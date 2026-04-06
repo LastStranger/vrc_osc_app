@@ -1,5 +1,6 @@
 import { Text, View, FlatList } from "react-native";
-
+import { SafeAreaView } from "react-native-safe-area-context";
+import { LegendList, LegendListRef, LegendListRenderItemProps } from "@legendapp/list"
 import { LinearGradient } from "expo-linear-gradient";
 import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
 import { DataT, HomeContextT } from "@/store/types";
@@ -110,23 +111,27 @@ function HomeScreen() {
                 style={{ flex: 1 }}
                 colors={["#A3C8FF", "#E0E4FF"]} // 背景渐变色
             >
-                <GestureHandlerRootView className="flex-1  pt-16">
-                    <FlatList
-                        className="flex-1"
-                        // contentContainerStyle={{ flex:1 }}
-                        keyExtractor={(item: DataT, index: number) => item.name}
-                        onScroll={handleScroll}
-                        data={store.oscArr}
-                        renderItem={renderItem}
-                        ListEmptyComponent={EmptyListComponent}
-                        windowSize={20} // 控制渲染窗口为5个items
-                        maxToRenderPerBatch={30} // 每批次渲染的最大数量
-                        updateCellsBatchingPeriod={50} // 批量渲染的时间窗口
+                <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+                    <GestureHandlerRootView className="flex-1">
+                        <LegendList
+                            maintainVisibleContentPosition
+                            recycleItems={true}
+                            className="flex-1"
+                            contentContainerStyle={{ flexGrow: 1 }}
+                            keyExtractor={(item: DataT, index: number) => item.name}
+                            onScroll={handleScroll}
+                            data={store.oscArr}
+                            renderItem={renderItem}
+                            ListEmptyComponent={EmptyListComponent}
+                        // windowSize={20} // 控制渲染窗口为5个items
+                        // maxToRenderPerBatch={30} // 每批次渲染的最大数量
+                        // updateCellsBatchingPeriod={50} // 批量渲染的时间窗口
                         // removeClippedSubviews={true} // 移除屏幕外的视图
-                        initialNumToRender={10} // 初始渲染数量
+                        // initialNumToRender={10} // 初始渲染数量
                         // getItemLayout={getItemLayout} // 固定高度布局
-                    />
-                </GestureHandlerRootView>
+                        />
+                    </GestureHandlerRootView>
+                </SafeAreaView>
             </LinearGradient>
         </HomeContext.Provider>
     );

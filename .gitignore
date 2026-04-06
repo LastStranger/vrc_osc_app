@@ -44,3 +44,4 @@ android
 .env.local
 .env.*.local
 .vscode
+.xcode.env
