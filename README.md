@@ -58,7 +58,7 @@ npx expo run:android // 电脑模拟器
   EXPO_PUBLIC_TENCENT_SECRET_KEY="XXXX"
   ```
 
-- **打包说明**: 目前该项目需要自己打包本地使用，生产包等我有时间再弄吧
+- **打包说明**: 目前该项目iOS需要自己打包本地使用，安卓包可以直接从release区下载安装即可
 
 
 ## 🤝 贡献指南
