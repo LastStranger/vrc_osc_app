@@ -48,7 +48,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#000000"
         }
-      ]
+      ],
+      "expo-vrc-osc-intent"
     ],
     "experiments": {
       "typedRoutes": true

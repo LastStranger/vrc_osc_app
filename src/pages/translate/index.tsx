@@ -1,6 +1,6 @@
 import { startRecording, stopRecording } from "@/utils/audio"; // 音频录制工具
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { View, Text, ActivityIndicator, Pressable, Platform } from "react-native";
+import { View, Text, ActivityIndicator, Pressable, Platform, Alert } from "react-native";
 import tencentTranslate from "@/utils/translate"; // 腾讯翻译工具
 import osc from "react-native-vrc-osc"; // OSC 通信库
 import * as Haptics from "expo-haptics"; // 触觉反馈工具
@@ -56,11 +56,22 @@ const Index = () => {
             const audioBase64 = await stopRecording(recordingRef.current); // 停止录音并获取音频数据
             setIsRecording(false); // 更新状态
 
+            if (!rootStore?.tencentSecretId || !rootStore?.tencentSecretKey) {
+                Alert.alert("配置错误", "请先在设置页面配置腾讯云的 SecretId 和 SecretKey");
+                setIsLoading(false);
+                return;
+            }
+
             // 调用翻译接口
-            const data = await tencentTranslate(audioBase64 ?? "", {
-                source: store.sourceLang,
-                target: store.targetLang,
-            });
+            const data = await tencentTranslate(
+                audioBase64 ?? "", 
+                {
+                    source: store.sourceLang,
+                    target: store.targetLang,
+                }, 
+                rootStore.tencentSecretId, 
+                rootStore.tencentSecretKey
+            );
             setTranslatedText(data?.target); // 更新显示翻译文本
             setSourceTxt(data?.source); // 更新显示源文本
 

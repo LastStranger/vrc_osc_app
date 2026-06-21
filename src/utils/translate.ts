@@ -2,14 +2,6 @@
 import CryptoJS from "crypto-js";
 import axios from "axios";
 
-// 使用环境变量
-const secretId = process.env.EXPO_PUBLIC_TENCENT_SECRET_ID;
-const secretKey = process.env.EXPO_PUBLIC_TENCENT_SECRET_KEY;
-
-if (!secretId || !secretKey) {
-    throw new Error('腾讯云 API 密钥未配置，请检查环境变量');
-}
-
 interface SignatureParams {
     secretId: string;
     secretKey: string;
@@ -73,7 +65,12 @@ export function generateSignature(params: SignatureParams): SignatureResult {
     return { authorization, timestamp, date };
 }
 
-const tencentTranslate = async (audioBase64: string, language?: { source: string, target: string }) => {
+const tencentTranslate = async (audioBase64: string, language?: { source: string, target: string }, secretId?: string, secretKey?: string) => {
+    if (!secretId || !secretKey) {
+        console.error("腾讯云 API 密钥未配置，请到设置页面配置");
+        return null;
+    }
+
     console.log(audioBase64, "audioBase64");
     const endpoint = "tmt.tencentcloudapi.com";
     const service = "tmt";

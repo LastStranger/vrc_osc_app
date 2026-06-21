@@ -49,6 +49,7 @@ const Index = ({ item, index }: Props) => {
     );
 
     const sendOscMessage = (addr: string, value: number) => {
+        console.log("sendOscMessage", addr, value);
         osc.sendMessage(addr, [value]);
     };
 
@@ -119,7 +120,7 @@ const Index = ({ item, index }: Props) => {
                 <GestureDetector gesture={panGesture}>
                     <View
                         className="flex-1 my-2 mx-3 rounded-lg bg-[#F5F8FF] overflow-hidden"
-                        // style={{ position: 'relative' }}
+                    // style={{ position: 'relative' }}
                     >
                         <Animated.View style={animatedStyle} />
                         <View className="p-2" style={{ zIndex: 1 }}>
