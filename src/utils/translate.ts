@@ -22,7 +22,17 @@ interface SignatureResult {
 
 // 生成腾讯云TC3-HMAC-SHA256签名
 export function generateSignature(params: SignatureParams): SignatureResult {
-    const { secretId, secretKey, service, action, region, version, payload, endpoint, timestamp = Math.floor(Date.now() / 1000) } = params;
+    const {
+        secretId,
+        secretKey,
+        service,
+        action,
+        region,
+        version,
+        payload,
+        endpoint,
+        timestamp = Math.floor(Date.now() / 1000),
+    } = params;
     const date = new Date(timestamp * 1000).toISOString().split("T")[0];
 
     // ************* 步骤 1：拼接规范请求串 *************
@@ -44,7 +54,7 @@ export function generateSignature(params: SignatureParams): SignatureResult {
         canonicalQueryString,
         canonicalHeaders,
         signedHeaders,
-        hashedRequestPayload
+        hashedRequestPayload,
     ].join("\n");
 
     // ************* 步骤 2：拼接待签名字符串 *************
@@ -65,7 +75,12 @@ export function generateSignature(params: SignatureParams): SignatureResult {
     return { authorization, timestamp, date };
 }
 
-const tencentTranslate = async (audioBase64: string, language?: { source: string, target: string }, secretId?: string, secretKey?: string) => {
+const tencentTranslate = async (
+    audioBase64: string,
+    language?: { source: string; target: string },
+    secretId?: string,
+    secretKey?: string,
+) => {
     if (!secretId || !secretKey) {
         console.error("腾讯云 API 密钥未配置，请到设置页面配置");
         return null;
@@ -113,7 +128,7 @@ const tencentTranslate = async (audioBase64: string, language?: { source: string
                 "X-TC-Region": region,
             },
         });
-        console.log(response.data.Response);
+        console.log(response.data.Response, "????");
         return { target: response.data.Response.TargetText, source: response.data.Response.SourceText };
     } catch (error) {
         console.error("语音识别失败:", error);

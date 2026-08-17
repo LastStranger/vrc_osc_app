@@ -44,8 +44,14 @@ npm install
 # 运行项目
 npx expo prebuild --clean
 npm run start
-npx expo run:ios // 电脑模拟器
-npx expo run:android // 电脑模拟器
+
+# iOS 运行与安装命令
+npx expo run:ios                                    # 运行到电脑模拟器 (Debug 模式)
+npx expo run:ios --device                           # 安装到 iOS 真机 (Debug 模式，需连接电脑 Metro 服务)
+npx expo run:ios --device --configuration Release   # 安装到 iOS 真机 (Release 独立运行包，脱离电脑运行)
+
+# Android 运行
+npx expo run:android                                # 运行到 Android 模拟器/真机
 ```
 
 ## ⚠️ 注意事项
@@ -58,7 +64,12 @@ npx expo run:android // 电脑模拟器
   EXPO_PUBLIC_TENCENT_SECRET_KEY="XXXX"
   ```
 
-- **打包说明**: 目前该项目iOS需要自己打包本地使用，安卓包可以直接从release区下载安装即可
+- **打包与真机安装说明**: 
+  - **iOS**: 需要使用 Mac 电脑连接 iPhone 本地打包安装。如果要生成不需要连接电脑 Metro 服务的离线独立 App，请使用：
+    ```sh
+    npx expo run:ios --device --configuration Release
+    ```
+  - **Android**: 安卓包可以直接从 Release 区下载 apk 安装即可。
 
 
 ## 🤝 贡献指南

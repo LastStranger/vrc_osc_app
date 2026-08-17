@@ -64,14 +64,15 @@ const Index = () => {
 
             // 调用翻译接口
             const data = await tencentTranslate(
-                audioBase64 ?? "", 
+                audioBase64 ?? "",
                 {
                     source: store.sourceLang,
                     target: store.targetLang,
-                }, 
-                rootStore.tencentSecretId, 
-                rootStore.tencentSecretKey
+                },
+                rootStore.tencentSecretId,
+                rootStore.tencentSecretKey,
             );
+            console.log(data, "data data");
             setTranslatedText(data?.target); // 更新显示翻译文本
             setSourceTxt(data?.source); // 更新显示源文本
 
