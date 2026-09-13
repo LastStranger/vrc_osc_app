@@ -10,7 +10,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Props } from "@/components/Home/OperateItem/types";
-import { HomeContext } from "@/app/(tabs)";
+import { HomeContext } from "@/pages/home";
 import { observer } from "mobx-react-lite";
 import { DataT } from "@/store/types";
 import FloatItem from "@/components/Home/OperateItem/FloatItem";

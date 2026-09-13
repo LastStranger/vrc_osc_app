@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 import { storage } from "@/store/mmkv";
-import oscDataDemo1 from "@/app/(tabs)/data.json";
-import oscDataDemo2 from "@/app/(tabs)/dataBlue.json";
+import oscDataDemo1 from "@/constants/data/demoAvatar1.json";
+import oscDataDemo2 from "@/constants/data/demoAvatar2.json";
 import { DataT } from "@/store/types";
 import osc from "react-native-vrc-osc";
 import ExpoVrcOscIntentModule from "expo-vrc-osc-intent";

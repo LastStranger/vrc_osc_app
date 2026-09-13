@@ -4,7 +4,7 @@ import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanima
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import { Props } from "@/components/Home/OperateItem/types";
 import { observer } from "mobx-react-lite";
-import { HomeContext } from "@/app/(tabs)";
+import { HomeContext } from "@/pages/home";
 import osc from "react-native-vrc-osc";
 import * as Haptics from "expo-haptics"; // 导入 expo-haptics
 import { scheduleOnRN } from "react-native-worklets";

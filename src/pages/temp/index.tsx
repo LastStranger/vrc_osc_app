@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
-import * as Linking from "expo-linking";
 import { useLocalSearchParams } from "expo-router";
 import decodeBase64 from "@/utils/decodeBase64";
 import osc from "react-native-vrc-osc";
 
-const Index = () => {
+const TempCommand = () => {
     const [commandString, setCommandString] = useState("");
     const params = useLocalSearchParams();
 
     useEffect(() => {
-        // 处理从根 Layout 传递过来的参数
-        const handleDeepLink = () => {
+        const handleCommand = () => {
             console.log("temp 页面收到参数:", params);
 
             if (params?.isClear) {
@@ -55,8 +53,8 @@ const Index = () => {
             }
         };
 
-        handleDeepLink(); // 处理参数
-    }, [params]); // 当参数变化时重新执行
+        handleCommand();
+    }, [params]);
 
     return (
         <View className="flex-1 items-center justify-center">
@@ -65,4 +63,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default TempCommand;

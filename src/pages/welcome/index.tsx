@@ -16,15 +16,14 @@ import Animated, {
 } from "react-native-reanimated";
 import { scheduleOnRN, scheduleOnUI } from "react-native-worklets";
 import { Stagger } from "@animatereactnative/stagger";
-import { useNavigation } from "expo-router";
+import { useRouter } from "expo-router";
+import { storage } from "@/store/mmkv";
 
 import { Canvas, SweepGradient, vec, BlurMask, RoundedRect } from "@shopify/react-native-skia";
 
 cssInterop(Image, { className: "style" });
 
-const { width, height } = Dimensions.get("window");
-// const _itemWidth = width * 0.62;
-// const _itemHeight = _itemWidth * 1.67;
+const { width } = Dimensions.get("window");
 const _itemWidth = width;
 const _itemHeight = _itemWidth * (9 / 16);
 const _spacing = 16;
@@ -37,10 +36,10 @@ const images = [
     require("@/assets/images/welcome/5.png"),
 ];
 
-const Index = () => {
+const Welcome = () => {
     const offset = useSharedValue(0);
     const [actIndex, setActIndex] = useState(1);
-    const navigation = useNavigation<any>();
+    const router = useRouter();
     const angle = useSharedValue(0);
 
     useEffect(() => {
@@ -69,11 +68,11 @@ const Index = () => {
     );
 
     const handleGoToHome = useCallback(() => {
-        navigation.replace("(tabs)");
-    }, []);
+        storage.set("hasSeenWelcome", true);
+        router.replace("/(tabs)");
+    }, [router]);
 
     const renderItems = useCallback(({ item }: any) => {
-        // return <Image style={{width: 100, height: 100}} source={item} />;
         return (
             <Image
                 className="rounded-[16]"
@@ -120,19 +119,15 @@ const Index = () => {
                             y={20}
                             width={160}
                             height={60}
-                            r={30} // 圆角半径，可根据需求调整
-                            // color="lightblue"
+                            r={30}
                         >
-                            {/*<Rect x={20} y={20} width={160} height={60} blendMode={"darken"}>*/}
                             <SweepGradient
                                 c={vec(100, 50)}
                                 origin={{ x: 100, y: 50 }}
                                 colors={["#ff4545", "#00ff99", "#006aff", "#ff0095", "#ff4545"]}
-                                // positions={[0, 0.25, 0.5, 0.75, 1]}
                                 transform={aTransform}
                             />
                             <BlurMask blur={8} style={"solid"} />
-                            {/*</Rect>*/}
                         </RoundedRect>
                     </Canvas>
 
@@ -145,7 +140,7 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default Welcome;
 
 const styles = StyleSheet.create({
     container: {
